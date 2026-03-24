@@ -1,0 +1,22 @@
+% Section 1: Motivation and significance
+\section{Motivation and significance}
+\label{sec:introduction}
+
+Forest operations planners must make short-horizon decisions about machine allocation, sequence, and timing under hard logistical constraints. Those decisions are increasingly scrutinized against cost, safety, environmental performance, and delivery reliability objectives, while operating conditions remain heterogeneous across tenure, terrain, and harvest system types \cite{henkelman1978gpssv,weintraub1996new,heinimann2007forest,buongiorno2003decision,kangas2008decision}. In practice, organizations still combine spreadsheets, GIS workflows, and local scripts to support day-to-day scheduling, which limits comparability and slows model transfer between contexts \cite{ulvdal2022uncertainty,nelson2003forestmodels}.
+
+Jaffray et~al.'s systematic review provides the clearest current synthesis of this problem space \cite{jaffray2025systematic}. Across 23 peer-reviewed studies published between 2005 and 2024, the review reports strong technical contributions but recurring structural limitations: high site specificity, limited open artifacts, and weak reproducibility support. The review's design implications are explicit: operational planning tools need standardized inputs, transparent formulations, and reproducible evaluation workflows so that methods can be compared across settings without rebuilding full software stacks.
+
+This SoftwareX paper is the middle contribution in a review -> platform -> modelling sequence. The review defines the gap and requirements; this paper documents FHOPS as reusable infrastructure that operationalizes those requirements and produces a reproducible baseline evidence package; companion modelling work then studies specific design questions (e.g., rolling-horizon configuration) on that shared baseline.
+
+FHOPS combines a scenario contract for operational inputs, heuristic and mixed-integer solver pathways, and a shared evaluation layer for runtime, schedule quality, robustness, and costing interpretation. The contribution is not a new optimization theorem; it is inspectable, reusable software that enables equivalent experiments on shared structures with traceable outputs.
+
+We make three contributions in this paper:
+\begin{enumerate}
+  \item \textbf{Operational planning software architecture.} We define a domain-first software structure around blocks, machines, shifts, landings, and mobilization rules so scheduling analyses can be transferred across cases with minimal recoding.
+  \item \textbf{Canonical formulation + traceability.} We present the operational MILP in a canonical equation block with direct links to implementation and regression tests, enabling reviewer-level verification from manuscript equation to executable model.
+  \item \textbf{Reproducible validation baseline.} We report benchmark, tuning, playback-robustness, and costing outputs on a public British Columbia reference ladder (tiny7, small21, med42), with synthetic scaling support, so future modelling studies can reuse a stable baseline.
+\end{enumerate}
+
+Scope is intentionally bounded. We focus on software platform capability and reproducible baseline evidence, not on broad claims of external deployment impact. Real-world multi-context validation (including additional system families and rolling-horizon case analyses) is treated as downstream modelling work that reuses the same platform and artifacts rather than redefining them.
+
+Section~\ref{sec:software-description} describes entities, methods, and formulation traceability. Section~\ref{sec:illustrative-example} reports validation evidence around planner-facing operational questions. Section~\ref{sec:impact} discusses deployment relevance, maturity, and transfer limits. Section~\ref{sec:conclusions} closes with claims, limits, and the handoff to companion modelling studies.

@@ -1,0 +1,4 @@
+scenario,bundle,best_algorithm,best_objective,second_best_delta,mip_objective,mip_gap,algorithms_evaluated
+baseline:med42,baseline,bayes,-32235.69352,1866.500214000007,,,5
+baseline:small21,baseline,ils,15637.980819999995,0.18399999999928696,,,5
+baseline:tiny7,baseline,ils,4349.264752,0.0,,,5

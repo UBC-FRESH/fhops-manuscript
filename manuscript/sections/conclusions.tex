@@ -1,0 +1,21 @@
+% Section 5: Conclusions and future work
+\section{Conclusions}
+\label{sec:conclusions}
+
+This paper contributes a reusable forest operations scheduling platform positioned between review and companion modelling analyses.
+
+We make three claims supported by evidence in Sections~\ref{sec:software-description} and \ref{sec:illustrative-example}:
+\begin{enumerate}
+  \item FHOPS provides a domain-aligned planning structure (scenario contract, solver pathways, and evaluation outputs) that supports repeatable operational scheduling studies.
+  \item The operational MILP is documented in canonical form with equation-to-code traceability, allowing direct technical audit from manuscript equations to implementation and tests.
+  \item Benchmark, robustness, costing, and scaling outputs are reproducibly generated and reusable as a common experimental baseline.
+\end{enumerate}
+
+We state three limits explicitly:
+\begin{enumerate}
+  \item Validation breadth is currently limited to the public BC ground-based reference ladder and synthetic scaling tiers.
+  \item Runtime values are hardware- and budget-dependent and should be interpreted primarily as within-study comparisons.
+  \item Warm-start MIP support is integrated, but larger-instance performance gains are not yet claimed as established results.
+\end{enumerate}
+
+Immediate next work is to use this platform baseline for rolling-horizon and broader deployment studies while preserving the same scenario contract and traceability standards.

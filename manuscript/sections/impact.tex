@@ -1,0 +1,23 @@
+% Section 4: Impact
+\section{Impact}
+\label{sec:impact}
+
+\subsection{Practical value for operations planning}
+FHOPS reduces the cost of moving from ad hoc local models to comparable, auditable planning studies. The practical value is not one ``best'' solver run, but a repeatable workflow that keeps inputs, constraints, solver settings, and evaluation outputs aligned across planning cycles.
+For planning teams, this supports more defensible schedule revisions because performance differences can be tied to declared assumptions rather than undocumented preprocessing or solver-configuration changes.
+
+\subsection{Research value in the manuscript sequence}
+Relative to the review paper \cite{jaffray2025systematic}, this manuscript contributes executable infrastructure: a shared scenario contract, a traceable formulation, and reproducible baseline evidence. Relative to companion modelling studies, it provides the stable software and data baseline used to test methodological questions (e.g., rolling-horizon configuration effects), so platform and modelling claims can be evaluated separately.
+
+\subsection{Maturity and current scope}
+The current release is an early public platform baseline. It demonstrates reproducible scheduling experiments on public BC reference scenarios and synthetic tiers (Section~\ref{sec:illustrative-example}), but does not claim broad external deployment evidence.
+
+\subsection{Transferability and limits}
+FHOPS is structured to support transfer to new contexts through scenario and parameter updates rather than solver rewrites. Three current limits remain explicit:
+\begin{itemize}
+  \item Validation breadth is still centered on the current public reference ladder.
+  \item Runtime comparisons are environment-dependent and should be interpreted as within-study baselines.
+  \item Warm-start MIP integration is implemented, but decisive performance gains at larger stress cases are not yet claimed.
+\end{itemize}
+
+These limits keep the manuscript's claims aligned with demonstrated evidence.
