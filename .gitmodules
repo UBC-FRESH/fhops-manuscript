@@ -1,0 +1,4 @@
+[submodule "extras"]
+	path = extras
+	url = https://github.com/UBC-FRESH/fhops-manuscript-extras.git
+	branch = main
