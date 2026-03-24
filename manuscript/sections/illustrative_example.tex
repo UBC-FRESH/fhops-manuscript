@@ -25,14 +25,14 @@ Table~\ref{tab:tuning} adds parameter-search evidence. Reported $\Delta$ values 
   \centering
   \caption{Solver performance across the reference scenarios. Objective values are compared within scenario (not across scenarios) because sign and scaling differ by dataset/weight profile.}
   \label{tab:benchmarks}
-  \input{../../assets/data/tables/solver_performance.tex}
+  \input{sections/includes/solver_performance.tex}
 \end{table}
 
 \begin{table}[t]
   \centering
   \caption{Best-performing tuner per scenario (delta measured against SA's default preset).}
   \label{tab:tuning}
-  \input{../../assets/data/tables/tuning_leaderboard.tex}
+  \input{sections/includes/tuning_leaderboard.tex}
 \end{table}
 
 \subsection{Operational question 2: schedule robustness under disturbance}
@@ -42,7 +42,7 @@ Figure~\ref{fig:playback} shows that disturbance sensitivity is scenario- and me
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=\linewidth]{../../assets/data/playback/utilisation_robustness.png}
+  \includegraphics[width=\linewidth]{sections/includes/utilisation_robustness.png}
   \caption{Deterministic vs. stochastic utilization across scenarios. Points denote mean day-level utilization and error bars denote standard deviation over stochastic samples.}
   \label{fig:playback}
 \end{figure}
@@ -54,7 +54,7 @@ Scaling results from synthetic tiers (Figure~\ref{fig:scaling}) show increasing 
 
 \begin{figure}[t]
   \centering
-  \includegraphics[width=0.8\linewidth]{../../assets/data/scaling/runtime_vs_blocks.png}
+  \includegraphics[width=0.8\linewidth]{sections/includes/runtime_vs_blocks.png}
   \caption{Simulated annealing runtime versus number of blocks for synthetic tiers (small, medium, large).}
   \label{fig:scaling}
 \end{figure}
