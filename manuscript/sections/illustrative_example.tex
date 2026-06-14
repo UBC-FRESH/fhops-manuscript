@@ -23,16 +23,24 @@ Table~\ref{tab:tuning} adds parameter-search evidence. Reported $\Delta$ values 
 
 \begin{table}[t]
   \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
   \caption{Solver performance across the reference scenarios. Objective values are compared within scenario (not across scenarios) because sign and scaling differ by dataset/weight profile.}
   \label{tab:benchmarks}
+  \resizebox{\linewidth}{!}{
   \input{sections/includes/solver_performance.tex}
+  }
 \end{table}
 
 \begin{table}[t]
   \centering
+  \small
+  \setlength{\tabcolsep}{4pt}
   \caption{Best-performing tuner per scenario (delta measured against SA's default preset).}
   \label{tab:tuning}
+  \resizebox{\linewidth}{!}{
   \input{sections/includes/tuning_leaderboard.tex}
+  }
 \end{table}
 
 \subsection{Operational question 2: schedule robustness under disturbance}
