@@ -16,7 +16,7 @@ The platform uses a typed scenario contract so solver results can be compared on
 
 FHOPS ships a public British Columbia ground-based reference ladder (tiny7, small21, med42) that scales from 7/2 to 21/6 to 42/12 (days/blocks) while keeping one operational archetype.
 
-This addresses a central review finding \cite{jaffray2025systematic}: transfer fails when assumptions are embedded in bespoke code rather than explicit scenario data.
+This addresses a central review finding \cite{jaffray2025systematic}: transfer fails when assumptions are embedded in bespoke code rather than explicit scenario data. Generalizability is supported structurally through this scenario contract, which separates operational assumptions from solver logic. Empirical validation across additional system families remains future work.
 
 \subsection{Solution methods for operational decisions}
 FHOPS provides complementary solver families for different planning horizons and time budgets:
@@ -47,7 +47,7 @@ Internally, FHOPS separates four concerns:
   \item \textbf{Reporting layer}: generation of tables/figures used in manuscript and documentation outputs.
 \end{enumerate}
 
-The software is available through Python modules and command-line wrappers, but interface choice is secondary to preserving equivalent, traceable evidence across runs.
+The software is available through Python modules and command-line wrappers, but interface choice is secondary to preserving equivalent, traceable evidence across runs. FHOPS is released as open-source software under an MIT license, with full source code, datasets, and experiment pipelines available in a public repository to support reuse and independent verification.
 
 \subsection{Reproducible evidence pipeline}
 Manuscript evidence is generated from versioned benchmark, tuning, playback, costing, and scaling assets produced by the same platform layers. Run logs and artifact paths provide traceable provenance for each reported value.

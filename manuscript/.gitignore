@@ -12,3 +12,7 @@ fhops-softx.out
 fhops-softx.pdf
 fhops-softx.synctex.gz
 fhops-softx.spl
+
+# Generated from elsarticle/elsarticle.ins by the Makefile.
+elsarticle/elsarticle.cls
+elsarticle/elsarticle.log
