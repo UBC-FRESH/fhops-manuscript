@@ -20,6 +20,32 @@ manuscript/
 - Retrieved: 2025-11-23 via `curl -L -o docs/softwarex/reference/templates/elsarticle-template.zip …`.
 - Contents live under `elsarticle/`. Keep upstream files pristine; place FHOPS-specific adjustments (title page, macros, includes) in `sections/` or sibling files so we can diff against the CTAN baseline.
 
+## SoftwareX template compliance audit
+
+Issue #5 rechecked the manuscript wrapper after the FHOPS v1.0.0 publication so the
+submission source does not drift from Elsevier/SoftwareX expectations.
+
+- The working source uses the official Elsevier `elsarticle` bundle snapshot stored at
+  `extras/reference/templates/elsarticle-template.zip` and keeps the upstream class,
+  installer, and numbered BibTeX styles under `manuscript/elsarticle/`.
+- `fhops-softx.tex` intentionally mirrors `elsarticle-template-num.tex`: it uses
+  `\documentclass[preprint,review,12pt]{elsarticle}`, `\journal{SoftwareX}`, a standard
+  `frontmatter` block, `abstract`, `keyword`, numbered sections, `elsarticle-num`, and
+  `references.bib`.
+- The SoftwareX-specific requirements that are not present in the generic `elsarticle`
+  shell are supplied as frontmatter inputs: `sections/highlights.tex`,
+  `metadata/code_metadata.tex`, and `metadata/current_code_version.tex`.
+- The Elsevier `Updated_software-update-template.tex` available online is explicitly for
+  updates to an existing SoftwareX article, not for an Original Software Publication, so
+  FHOPS should not be migrated into that update template.
+- For submission packaging, compile the checked-in source with `make pdf`. The broader
+  `make all` target refreshes local manuscript assets first and is useful for authors, but
+  the source package itself should include the already-generated `sections/includes/*`
+  tables and figures needed by `fhops-softx.tex`.
+
+Audit status: `make all` passes after the v1.0.0 metadata update. Remaining overfull/float
+layout warnings are tracked separately in issue #9.
+
 ## Build workflow (`latexmk` + TeX Live)
 We use the standard TeX Live toolchain (preferred by SoftwareX) orchestrated through `latexmk`. The Makefile also provides an `all` target so we can regenerate FHOPS assets + PDF in a single command.
 
