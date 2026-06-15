@@ -47,9 +47,14 @@ Internally, FHOPS separates four concerns:
   \item \textbf{Reporting layer}: generation of tables/figures used in manuscript and documentation outputs.
 \end{enumerate}
 
-The software is available through Python modules and command-line wrappers, but interface choice is secondary to preserving equivalent, traceable evidence across runs. FHOPS is released as open-source software under an MIT license, with full source code, datasets, and experiment pipelines available in a public repository to support reuse and independent verification.
+The software is available through Python modules and command-line wrappers. Interface
+choice is secondary to preserving equivalent, traceable evidence across runs. FHOPS is
+released under an MIT license, with source code, datasets, and experiment pipelines in a
+public repository to support reuse and independent verification.
 
 \subsection{Reproducible evidence pipeline}
-Manuscript evidence is generated from versioned benchmark, tuning, playback, costing, and scaling assets produced by the same platform layers. Run logs and artifact paths provide traceable provenance for each reported value.
+Manuscript evidence comes from versioned benchmark, tuning, playback, costing, and scaling
+assets produced by the same platform layers. Run logs and artifact paths provide
+provenance for each reported value.
 
 This arrangement is deliberate in the manuscript sequence: the review identifies missing reproducibility infrastructure \cite{jaffray2025systematic}, this paper contributes it as reusable software, and companion modelling studies can focus on method questions without redefining data contracts or reporting conventions.

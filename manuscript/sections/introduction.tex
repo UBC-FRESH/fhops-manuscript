@@ -2,7 +2,16 @@
 \section{Motivation and significance}
 \label{sec:introduction}
 
-Forest operations planners must make short-horizon decisions about machine allocation, sequence, and timing under hard logistical constraints. Those decisions are increasingly scrutinized against cost, safety, environmental performance, and delivery reliability objectives, while operating conditions remain heterogeneous across tenure, terrain, and harvest system types \cite{henkelman1978gpssv,weintraub1996new,heinimann2007forest,buongiorno2003decision,kangas2008decision}. In practice, organizations still combine spreadsheets, GIS workflows, and local scripts to support day-to-day scheduling, which limits comparability and slows model transfer between contexts \cite{ulvdal2022uncertainty,nelson2003forestmodels}.
+Forest operations planners must make short-horizon decisions about machine allocation,
+sequence, and timing under hard logistical constraints. These decisions are scrutinized
+against cost, safety, environmental performance, and delivery reliability, while operating
+conditions vary across tenure, terrain, and harvest systems
+\cite{henkelman1978gpssv,weintraub1996new,heinimann2007forest};
+decision-support work has long treated these settings as optimization problems
+\cite{buongiorno2003decision,kangas2008decision}.
+In practice, organizations still combine spreadsheets, GIS workflows, and local scripts
+for day-to-day scheduling, which limits comparability and slows model transfer
+\cite{ulvdal2022uncertainty,nelson2003forestmodels}.
 
 Jaffray et~al.'s systematic review provides the clearest current synthesis of this problem space \cite{jaffray2025systematic}. Across 23 peer-reviewed studies published between 2005 and 2024, the review reports strong technical contributions but recurring structural limitations: high site specificity, limited open artifacts, and weak reproducibility support. The review's design implications are explicit: operational planning tools need standardized inputs, transparent formulations, and reproducible evaluation workflows so that methods can be compared across settings without rebuilding full software stacks.
 

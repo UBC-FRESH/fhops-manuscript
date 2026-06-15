@@ -2,6 +2,11 @@
 \documentclass[preprint,review,12pt]{elsarticle}
 
 \usepackage{hyperref}
+\pdfstringdefDisableCommands{%
+  \def\corref#1{}%
+  \def\cortext#1#2{}%
+  \def\ead#1{}%
+}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{textcomp}
@@ -16,6 +21,7 @@
 
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\newcommand{\breakpath}[1]{\path{#1}}
 
 \journal{SoftwareX}
 

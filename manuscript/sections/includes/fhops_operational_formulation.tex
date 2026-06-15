@@ -253,59 +253,48 @@ x, y, g \in \{0,1\},\quad n \in \mathbb{Z}_{\ge 0},\quad p,z,I^{\text{start}},I,
 
 \textbf{Implementation mapping (equation blocks to code).}
 
-Primary modules: \texttt{src/fhops/model/milp/operational.py},
-\texttt{src/fhops/model/milp/data.py}. Primary tests:
-\texttt{tests/model/test\_operational\_milp.py},
-\texttt{tests/model/test\_operational\_driver.py}.
+Primary modules are \texttt{operational.py} and \texttt{data.py} under
+\breakpath{src/fhops/model/milp}. Primary regression tests live under
+\breakpath{tests/model} and cover the MILP builder plus driver integration.
 
 Equation-block mapping:
 
-\begin{itemize}
-\tightlist
-\item
-  \textbf{OBJ}: \texttt{model.objective} with \texttt{prod\_weight},
-  \texttt{landing\_weight}, \texttt{mobilisation\_weight},
-  \texttt{transition\_weight}
-\item
-  \textbf{E1}: \texttt{model.machine\_capacity}
-  (\texttt{machine\_capacity\_rule})
-\item
-  \textbf{E2}: \texttt{model.role\_compatibility}
-  (\texttt{role\_compatibility\_rule})
-\item
-  \textbf{E3}: \texttt{model.production\_cap} (\texttt{prod\_cap\_rule})
-\item
-  \textbf{E4}: \texttt{model.block\_windows} (\texttt{window\_rule})
-\item
-  \textbf{E5}: \texttt{model.role\_prod\_balance}
-  (\texttt{role\_prod\_balance\_rule})
-\item
-  \textbf{E6}: \texttt{model.transition\_prev},
-  \texttt{model.transition\_curr}, \texttt{model.transition\_link}
-\item
-  \textbf{E7}: \texttt{model.inventory\_start\_eq},
-  \texttt{model.inventory\_balance}, \texttt{model.inventory\_guard}
-\item
-  \textbf{E8}: \texttt{model.activation\_prod},
-  \texttt{model.head\_start}, \texttt{model.role\_active\_upper},
-  \texttt{model.role\_active\_lower}
-\item
-  \textbf{E9}: \texttt{model.loader\_batch},
-  \texttt{model.loader\_partial\_cap}
-\item
-  \textbf{E10}: \texttt{model.block\_balance}
-  (\texttt{block\_balance\_rule}) + \texttt{model.leftover}
-\item
-  \textbf{E11}: \texttt{model.landing\_capacity}
-  (\texttt{landing\_capacity\_rule}) + \texttt{model.landing\_surplus}
-\item
-  \textbf{D1}: variable domain declarations for \texttt{model.x},
-  \texttt{model.y}, \texttt{model.role\_active}, \texttt{model.loads},
-  \texttt{model.prod}, \texttt{model.role\_prod},
-  \texttt{model.inventory\_start}, \texttt{model.inventory},
-  \texttt{model.loader\_partial}, \texttt{model.leftover}, and
-  \texttt{model.landing\_surplus}
-\end{itemize}
+\begin{center}
+\small
+\begin{tabular}{>{\raggedright\arraybackslash}p{0.16\linewidth}>{\raggedright\arraybackslash}p{0.74\linewidth}}
+\hline
+Block & Pyomo objects and rules \\
+\hline
+\textbf{OBJ} & \texttt{model.objective}; weights:
+\texttt{prod\_weight}, \texttt{landing\_weight},
+\texttt{mobilisation\_weight}, \texttt{transition\_weight} \\
+\textbf{E1} & \texttt{model.machine\_capacity}
+(\texttt{machine\_capacity\_rule}) \\
+\textbf{E2} & \texttt{model.role\_compatibility}
+(\texttt{role\_compatibility\_rule}) \\
+\textbf{E3} & \texttt{model.production\_cap} (\texttt{prod\_cap\_rule}) \\
+\textbf{E4} & \texttt{model.block\_windows} (\texttt{window\_rule}) \\
+\textbf{E5} & \texttt{model.role\_prod\_balance}
+(\texttt{role\_prod\_balance\_rule}) \\
+\textbf{E6} & \texttt{model.transition\_prev},
+\texttt{model.transition\_curr}, \texttt{model.transition\_link} \\
+\textbf{E7} & \texttt{model.inventory\_start\_eq},
+\texttt{model.inventory\_balance}, \texttt{model.inventory\_guard} \\
+\textbf{E8} & \texttt{model.activation\_prod}, \texttt{model.head\_start},
+\texttt{model.role\_active\_upper}, \texttt{model.role\_active\_lower} \\
+\textbf{E9} & \texttt{model.loader\_batch}, \texttt{model.loader\_partial\_cap} \\
+\textbf{E10} & \texttt{model.block\_balance}
+(\texttt{block\_balance\_rule}) plus \texttt{model.leftover} \\
+\textbf{E11} & \texttt{model.landing\_capacity}
+(\texttt{landing\_capacity\_rule}) plus \texttt{model.landing\_surplus} \\
+\textbf{D1} & Domain declarations for \texttt{model.x}, \texttt{model.y},
+\texttt{model.role\_active}, \texttt{model.loads}, \texttt{model.prod},
+\texttt{model.role\_prod}, \texttt{model.inventory\_start},
+\texttt{model.inventory}, \texttt{model.loader\_partial},
+\texttt{model.leftover}, and \texttt{model.landing\_surplus} \\
+\hline
+\end{tabular}
+\end{center}
 
 This formulation is the canonical mathematical reference for FHOPS
 operational MILP documentation and companion modelling manuscripts.
