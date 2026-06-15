@@ -46,6 +46,13 @@ submission source does not drift from Elsevier/SoftwareX expectations.
 Audit status: `make all` passes after the v1.0.0 metadata update. Remaining overfull/float
 layout warnings are tracked separately in issue #9.
 
+## Corresponding author contact details
+
+The manuscript source records the public corresponding-author contact details required for
+submission: email via `\ead{}`, work phone in `\cortext{}`, and full UBC postal address
+in `\address{}`. Editorial Manager can duplicate these details during submission, but the
+LaTeX source should remain self-contained for the source package.
+
 ## Build workflow (`latexmk` + TeX Live)
 We use the standard TeX Live toolchain (preferred by SoftwareX) orchestrated through `latexmk`. The Makefile also provides an `all` target so we can regenerate FHOPS assets + PDF in a single command.
 
