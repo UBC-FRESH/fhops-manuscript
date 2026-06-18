@@ -2,10 +2,10 @@
 \section{Software description}
 \label{sec:software-description}
 
-FHOPS is organized around the core operational scheduling question: given a set of blocks, machine resources, shift calendars, and mobilization constraints, which assignments should be made, in which sequence, and with what expected production and cost consequences. The software architecture is therefore defined by planning entities and decision logic first, and by implementation boundaries second.
+FHOPS is organized around the core operational scheduling question: given a set of blocks, machine resources, shift calendars, and mobilization constraints, what assignments should be made, in which sequence, and with what expected production and cost consequences. The software architecture is therefore defined by planning entities and decision logic first, and by implementation boundaries second.
 
 \subsection{Operational entities and planning context}
-The platform uses a typed scenario contract so solver results can be compared on fixed operational inputs:
+The platform uses a typed scenario contract allowing solver results to be compared on fixed operational inputs:
 \begin{itemize}
   \item \textbf{Blocks and windows}: harvest volumes, treatment windows, and system requirements.
   \item \textbf{Machines and roles}: role-specific production rates, availability, and compatibility.
@@ -14,7 +14,7 @@ The platform uses a typed scenario contract so solver results can be compared on
   \item \textbf{Constraint metadata}: sequencing prerequisites, role activation conditions, and completion balances.
 \end{itemize}
 
-FHOPS ships a public British Columbia ground-based reference ladder (tiny7, small21, med42) that scales from 7/2 to 21/6 to 42/12 (days/blocks) while keeping one operational archetype.
+FHOPS ships a public BC ground-based reference ladder (tiny7, small21, med42) that scales from 7/2 to 21/6 to 42/12 (days/blocks) while keeping one operational archetype.
 
 This addresses a central review finding \cite{jaffray2025systematic}: transfer fails when assumptions are embedded in bespoke code rather than explicit scenario data. Generalizability is supported structurally through this scenario contract, which separates operational assumptions from solver logic. Empirical validation across additional system families remains future work.
 
@@ -22,11 +22,11 @@ This addresses a central review finding \cite{jaffray2025systematic}: transfer f
 FHOPS provides complementary solver families for different planning horizons and time budgets:
 \begin{itemize}
   \item \textbf{Metaheuristic solvers (SA/ILS/Tabu)} provide practical schedule candidates for larger instances where rapid re-solving is needed.
-  \item \textbf{Mixed-integer programming (MIP)} provides an exact baseline where tractable, supporting verification and sensitivity analysis.
+  \item \textbf{Mixed-integer linear programming (MILP)} provides an exact baseline where tractable, supporting verification and sensitivity analysis.
   \item \textbf{Playback evaluation} re-simulates solved schedules under deterministic and stochastic conditions to quantify utilization, continuity, and disruption effects.
 \end{itemize}
 
-This reflects established forestry OR practice: exact models support formulation clarity and benchmark bounds, while heuristics support larger-scale operational runs \cite{paradis2018bilevel,nelson2003forestmodels}.
+This reflects established forestry operations research (OR) practice: exact models support formulation clarity and benchmark bounds, while heuristics support larger-scale operational runs \cite{paradis2018bilevel,nelson2003forestmodels}.
 
 Warm-start support is implemented for MIP, but this paper does not claim decisive wall-clock gains on med42/large84 stress contexts.
 
@@ -35,26 +35,21 @@ The deterministic operational MILP is presented in canonical form below. Equatio
 
 \input{sections/includes/fhops_operational_formulation}
 
-Each block maps to named implementation objects and regression tests. The mapping is maintained in the canonical include so manuscript and documentation remain synchronized for auditability.
-For practical review, the path is explicit: equation labels map to Pyomo objects in the operational builder, then to tests that check sequencing logic, bundle normalization, and driver integration. This reduces ambiguity when readers compare mathematical intent with executable behavior and helps maintainers detect formulation drift when model code evolves.
+Each block maps to named implementation objects and regression tests. The shared formulation source keeps the manuscript and documentation synchronized for auditability.
+For practical review, the path is explicit: equation labels map to Pyomo objects in the operational builder, then to tests that check sequencing logic, bundle normalization, and driver integration. This design and structure reduces ambiguity when readers compare mathematical intent with executable behaviour and helps maintainers detect formulation drift when model code evolves.
 
 \subsection{Architecture and implementation boundaries}
 Internally, FHOPS separates four concerns:
 \begin{enumerate}
   \item \textbf{Scenario layer}: ingestion and validation of planning entities.
-  \item \textbf{Optimization layer}: heuristic and MIP solvers sharing common scenario inputs.
-  \item \textbf{Evaluation layer}: playback and KPI computation for solved schedules.
+  \item \textbf{Optimization layer}: heuristic and MILP solvers sharing common scenario inputs.
+  \item \textbf{Evaluation layer}: playback and key performance indicators (KPI) computation for solved schedules.
   \item \textbf{Reporting layer}: generation of tables/figures used in manuscript and documentation outputs.
 \end{enumerate}
 
-The software is available through Python modules and command-line wrappers. Interface
-choice is secondary to preserving equivalent, traceable evidence across runs. FHOPS is
-released under an MIT license, with source code, datasets, and experiment pipelines in a
-public repository to support reuse and independent verification.
+The software is available through Python modules and command-line wrappers. Interface choice is secondary to preserving equivalent, traceable evidence across runs. FHOPS is released under an MIT license, with source code, datasets, and experiment pipelines in a public repository to support reuse and independent verification.
 
 \subsection{Reproducible evidence pipeline}
-Manuscript evidence comes from versioned benchmark, tuning, playback, costing, and scaling
-assets produced by the same platform layers. Run logs and artifact paths provide
-provenance for each reported value.
+Manuscript evidence comes from versioned benchmark, tuning, playback, costing, and scaling assets produced by the same platform layers. Run logs and artifact paths provide provenance for each reported value.
 
 This arrangement is deliberate in the manuscript sequence: the review identifies missing reproducibility infrastructure \cite{jaffray2025systematic}, this paper contributes it as reusable software, and companion modelling studies can focus on method questions without redefining data contracts or reporting conventions.

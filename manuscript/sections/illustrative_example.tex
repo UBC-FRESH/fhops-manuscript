@@ -2,7 +2,7 @@
 \section{Illustrative example}
 \label{sec:illustrative-example}
 
-This section evaluates FHOPS on the public British Columbia ground-based ladder (tiny7, small21, med42) plus synthetic scaling tiers. In this ladder, horizons increase from 7 to 21 to 42 days and block counts from 2 to 6 to 12 with the same 9-machine role mix. The goal is a reproducible baseline for practitioner interpretation and follow-on modelling studies, consistent with review-identified reproducibility gaps \cite{jaffray2025systematic}.
+This section evaluates FHOPS on the public BC ground-based ladder (tiny7, small21, med42) plus synthetic scaling tiers. In this ladder, horizons increase from 7 to 21 to 42 days and block counts from 2 to 6 to 12 with the same 9-machine role mix. The goal is a reproducible baseline for practitioner interpretation and follow-on modelling studies, consistent with review-identified reproducibility gaps \cite{jaffray2025systematic}.
 
 We organize the results around three operational questions:
 \begin{enumerate}
@@ -56,7 +56,7 @@ Figure~\ref{fig:playback} shows that disturbance sensitivity is scenario- and me
 \end{figure}
 
 \subsection{Operational question 3: cost interpretation and scaling behavior}
-Cost summaries complement utilization and production metrics by translating schedule effects into operating implications. On med42, mobilisation cost in Table~\ref{tab:benchmarks} spans 9846.12--10662.28~CAD across solver choices, indicating that comparable schedule quality can imply different movement-cost profiles. In this baseline, costing is used for within-study comparison, not external economic extrapolation.
+Cost summaries complement utilization and production metrics by translating schedule effects into operating implications. On med42, mobilization cost in Table~\ref{tab:benchmarks} spans 9846.12--10662.28~CAD across solver choices, indicating that comparable schedule quality can imply different movement-cost profiles. In this baseline, costing is used for within-study comparison, not external economic extrapolation.
 
 Scaling results from synthetic tiers (Figure~\ref{fig:scaling}) show increasing runtime under fixed solver budgets: 31.81~s (small, 4 blocks), 84.88~s (medium, 8 blocks), and 108.97~s (large, 16 blocks). The value is a reproducible scale signal measured in the same platform used for benchmark and robustness reporting.
 
@@ -70,12 +70,12 @@ Scaling results from synthetic tiers (Figure~\ref{fig:scaling}) show increasing 
 \subsection{Scope boundaries and interpretation limits}
 Three limits are essential for correct use of this section:
 \begin{itemize}
-  \item The public ladder currently represents one BC ground-based archetype; broader system families remain out of scope here.
+  \item The public ladder currently represents one BC ground-based archetype; broader system families remain out of scope.
   \item Objective values are comparable within scenario only; cross-scenario interpretation should rely on secondary KPIs (e.g., production, utilization, cost) and relative trends.
   \item Absolute runtime depends on hardware and solver budgets; comparisons in this manuscript are most reliable as within-study baselines.
 \end{itemize}
 
 \subsection{Provenance notes}
-The section's tables and figures come from versioned manuscript assets and linked run
+The tables and figures in this section come from versioned manuscript assets and linked run
 logs. Readers can audit values and reuse the same baseline in companion modelling
 analyses.
