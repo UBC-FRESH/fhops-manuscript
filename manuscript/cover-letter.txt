@@ -1,0 +1,50 @@
+June 18, 2026
+
+Dear SoftwareX Editors,
+
+On behalf of my coauthors, I am pleased to submit the manuscript titled
+"FHOPS: a reproducible optimisation and benchmarking stack for forest
+harvest operations" for consideration as an Original Software Publication in
+SoftwareX.
+
+FHOPS is an open-source Python platform for reproducible forest harvest
+operations planning studies. It provides a shared scenario contract,
+mixed-integer and heuristic solver pathways, and a unified evaluation layer
+for schedule quality, robustness, and cost interpretation. The manuscript
+documents FHOPS v1.0.0 as a stable software release and presents a
+reproducible benchmark evidence package generated from versioned manuscript
+assets.
+
+We believe the manuscript is a good fit for SoftwareX because the primary
+contribution is reusable research software rather than a new optimization
+theorem or a single case-study result. FHOPS addresses a recurring gap in
+forest operations research: planning tools are often site-specific, difficult
+to audit, and hard to compare across studies. By publishing the software,
+metadata, benchmark workflow, and source package together, this submission
+provides an inspectable baseline that other researchers can reuse and extend.
+
+The software is publicly available under the MIT License:
+
+- Source repository: https://github.com/UBC-FRESH/fhops
+- Versioned release: https://github.com/UBC-FRESH/fhops/releases/tag/v1.0.0
+- PyPI package: https://pypi.org/project/fhops/1.0.0/
+- Documentation: https://ubc-fresh.github.io/fhops/
+
+This manuscript is original, has not been published previously, and is not
+under consideration elsewhere. All authors have approved the submitted
+manuscript. The authors declare no competing financial interests or personal
+relationships that could have appeared to influence the work reported in this
+paper.
+
+Thank you for considering our submission.
+
+Sincerely,
+
+Gregory Paradis
+Assistant Professor
+Faculty of Forestry & Environmental Stewardship
+University of British Columbia
+2424 Main Mall, Office 4645
+Vancouver, British Columbia, V6T 1Z4, Canada
+gregory.paradis@ubc.ca
++1 604 822 1890
