@@ -1,7 +1,7 @@
 PDF=build/fhops-softx.pdf
 TEX=fhops-softx.tex
 BUILD_DIR=build
-SUBMISSION_NAME=fhops-softx-softwarex-source
+SUBMISSION_NAME=fhops-softx-em-flat
 SUBMISSION_DIR=$(BUILD_DIR)/$(SUBMISSION_NAME)
 SUBMISSION_ZIP=$(BUILD_DIR)/$(SUBMISSION_NAME).zip
 MANUSCRIPT_ROOT=$(abspath ..)
@@ -38,24 +38,18 @@ pdf: $(PDF)
 
 submission-package: all
 	$(RM) -r "$(SUBMISSION_DIR)" "$(SUBMISSION_ZIP)"
-	install -d "$(SUBMISSION_DIR)" "$(SUBMISSION_DIR)/elsarticle"
-	install -m 0644 "$(PDF)" "$(SUBMISSION_DIR)/fhops-softx.pdf"
+	install -d "$(SUBMISSION_DIR)"
 	install -m 0644 "$(TEX)" references.bib "$(SUBMISSION_DIR)/"
-	rsync -a metadata/ "$(SUBMISSION_DIR)/metadata/"
-	rsync -a sections/ "$(SUBMISSION_DIR)/sections/"
-	install -m 0644 "$(ELSARTICLE_CLS)" "$(SUBMISSION_DIR)/elsarticle/elsarticle.cls"
-	install -m 0644 "$(ELSARTICLE_DIR)/elsarticle-num.bst" "$(SUBMISSION_DIR)/elsarticle/"
-	printf '%s\n' '# FHOPS SoftwareX LaTeX Source Package' > "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' '' >> "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' 'This package contains the PDF and complete LaTeX source for the FHOPS SoftwareX manuscript.' >> "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' 'It intentionally excludes latexmk intermediates and unrelated elsarticle documentation PDFs.' >> "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' '' >> "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' 'To rebuild the manuscript PDF from this directory, run:' >> "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' '' >> "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' '```sh' >> "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' 'TEXINPUTS=elsarticle//: BSTINPUTS=elsarticle//: latexmk -pdf -interaction=nonstopmode fhops-softx.tex' >> "$(SUBMISSION_DIR)/README.md"
-	printf '%s\n' '```' >> "$(SUBMISSION_DIR)/README.md"
-	cd "$(BUILD_DIR)" && zip -qr "$(SUBMISSION_NAME).zip" "$(SUBMISSION_NAME)"
+	install -m 0644 metadata/code_metadata.tex metadata/current_code_version.tex "$(SUBMISSION_DIR)/"
+	install -m 0644 sections/highlights.tex sections/abstract.tex sections/introduction.tex "$(SUBMISSION_DIR)/"
+	install -m 0644 sections/software_description.tex sections/illustrative_example.tex "$(SUBMISSION_DIR)/"
+	install -m 0644 sections/impact.tex sections/conclusions.tex sections/acknowledgments.tex "$(SUBMISSION_DIR)/"
+	install -m 0644 sections/includes/fhops_operational_formulation.tex "$(SUBMISSION_DIR)/"
+	install -m 0644 sections/includes/solver_performance.tex sections/includes/tuning_leaderboard.tex "$(SUBMISSION_DIR)/"
+	install -m 0644 sections/includes/utilisation_robustness.png sections/includes/runtime_vs_blocks.png "$(SUBMISSION_DIR)/"
+	install -m 0644 "$(ELSARTICLE_CLS)" "$(ELSARTICLE_DIR)/elsarticle-num.bst" "$(SUBMISSION_DIR)/"
+	perl -0pi -e 's/\{sections\/(highlights|abstract|introduction|software_description|illustrative_example|impact|conclusions|acknowledgments)\}/{$$1}/g; s/\{metadata\/(code_metadata|current_code_version)\}/{$$1}/g; s/\{sections\/includes\/fhops_operational_formulation\}/{fhops_operational_formulation}/g; s/\{sections\/includes\/solver_performance\.tex\}/{solver_performance.tex}/g; s/\{sections\/includes\/tuning_leaderboard\.tex\}/{tuning_leaderboard.tex}/g; s/\{sections\/includes\/utilisation_robustness\.png\}/{utilisation_robustness.png}/g; s/\{sections\/includes\/runtime_vs_blocks\.png\}/{runtime_vs_blocks.png}/g' "$(SUBMISSION_DIR)"/*.tex
+	cd "$(SUBMISSION_DIR)" && zip -q "../$(SUBMISSION_NAME).zip" *
 	@printf 'Wrote %s\n' "$(SUBMISSION_ZIP)"
 
 $(ELSARTICLE_CLS): $(ELSARTICLE_DIR)/elsarticle.ins $(ELSARTICLE_DIR)/elsarticle.dtx

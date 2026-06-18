@@ -63,19 +63,20 @@ make all
 # Just build the PDF
 make pdf    # or simply `make`
 
-# Create the SoftwareX source upload zip
+# Create the Editorial Manager source upload zip
 make submission-package
 
 # Clean auxiliary files + build directory
 make clean
 ```
 
-`make submission-package` writes `build/fhops-softx-softwarex-source.zip`. The zip
-contains the compiled manuscript PDF, `fhops-softx.tex`, `references.bib`, `metadata/`,
-`sections/`, the generated `elsarticle.cls`, and the required numbered BibTeX style. It
-excludes `latexmk` intermediates and the unrelated `elsarticle/doc/*.pdf` template
-documentation files. The package README records the standalone compile command using local
-`TEXINPUTS` and `BSTINPUTS` so Elsevier can rebuild from the extracted source directory.
+`make submission-package` writes `build/fhops-softx-em-flat.zip` for Editorial Manager.
+EM rejects source zips with subfolders, so this archive is intentionally flat: every file
+is at the zip root, the staged TeX sources have their `\input{}` and figure paths rewritten,
+and the archive contains only compile-required LaTeX inputs. Upload
+`build/fhops-softx.pdf` separately as the manuscript PDF. The source zip excludes the PDF,
+README files, Markdown/CSV sidecars, `latexmk` intermediates, and unrelated
+`elsarticle/doc/*.pdf` template documentation files.
 
 `scripts/generate_assets.sh` is the one-stop entry point for reproducible artifacts. It now:
 
