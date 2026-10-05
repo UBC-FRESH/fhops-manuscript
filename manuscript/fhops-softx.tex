@@ -2,6 +2,8 @@
 \documentclass[preprint,review,12pt]{elsarticle}
 
 \usepackage{hyperref}
+\urlstyle{tt}
+\DeclareRobustCommand{\cpath}[1]{\path{#1}}
 \pdfstringdefDisableCommands{%
   \def\corref#1{}%
   \def\cortext#1#2{}%
@@ -15,6 +17,7 @@
 \usetikzlibrary{positioning,arrows.meta}
 \usepackage{booktabs}
 \usepackage{longtable}
+\usepackage{tabularx}
 \usepackage{array}
 \usepackage{calc}
 \modulolinenumbers[5]
@@ -22,6 +25,7 @@
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
 \newcommand{\breakpath}[1]{\path{#1}}
+\emergencystretch=2em
 
 \journal{SoftwareX}
 
