@@ -1,0 +1,30 @@
+# SoftwareX R2 comment register (SOFTX-D-26-00697R1 → R2)
+
+- Decision letter: `decision-letter.txt` (minor revision; resubmit by 2026-11-04).
+- Parent issue: UBC-FRESH/fhops-manuscript#20; branch `revision/softx-r2`.
+- Reviewer #2 comments were extracted from PDF annotations (PyMuPDF `page.annots()`) in
+  `SOFTX-D-26-00697_reviewer2.pdf`. **The reviewer annotated the original submission PDF
+  (SOFTX-D-26-00697, 26 pp.), not R1**; page numbers below refer to that PDF.
+- FHOPS capability claims are verified against the released `v1.0.0` tag (the version pinned in
+  the code-metadata tables), not the `fhops` working tree.
+
+| ID | Source / location | Comment (verbatim) | Action | Manuscript change | Status |
+|----|----|----|----|----|----|
+| E.1 | Editor, decision letter | "You might consider putting some of the equations in an appendix." | Pending decision (move full formulation + mapping table to Appendix A, keep summary + objective in §2?) | — | open |
+| R1.1 | Reviewer #1, decision letter | "All of my comments on the original version of the article have been reviewed and corrected. Therefore, I recommend the publication of this paper." | Thank reviewer | none | done |
+| R2.0 | Reviewer #2, decision letter | "The authors have done an excellent job. The application of software and process is well written and explained. I would suggest adding market price of products based on inventory which can give better insights on economic feasibility of the harvesting operations." | Thank; market-price suggestion answered under R2.9 | see R2.9 | done |
+| R2.1 | p1, title "FHOPS:" | "The authors have done a good job explaining FHOPS through the manuscript" | Thank | none | done |
+| R2.2 | p4, keyword "forest operations," | "Forest harvest operations and optimisation already exist in the manuscript title consider another wording." | Replace title-duplicating keywords | `fhops-softx.tex` keywords: *forest operations*, *optimisation*, *heuristics* → *machine scheduling*, *mixed-integer programming*, *metaheuristics*. **Also update EM keyword field at upload.** | done |
+| R2.3 | p4, abstract "FHOPS" | "Please expand" | Expand acronym at first use in abstract | `abstract.tex`: "The Forest Harvesting Operations Planning System (FHOPS) addresses…". **Also update EM abstract field at upload.** | done |
+| R2.4 | p6, contribution 1 | "Good attempt" | Thank | none | done |
+| R2.5 | p7, §2 intro ("given a set of blocks … mobilization constraints, what assignments … sequence, and with") | "Does this include trucking" | Clarify scope: model ends at loading at the landing; loader output counted in truckload batches (E9); haul transport out of scope. Verified v1.0.0: no truck/haul/mill fields in `Scenario`; loader batching `DEFAULT_TRUCKLOAD_M3=30` (`model/milp/data.py`). | `software_description.tex` §2 opening paragraph | done |
+| R2.6 | p7, "should be made, in which sequence" | "Helps in decision making to have a coupled or decoupled harvesting system" | Explain head-start buffer (E8) supports comparing coupled vs decoupled systems. Verified v1.0.0 `operational.py`: `B = buffer_shifts × upstream capacity`; loader buffer ≥ truckload batch; reference ladder head-start 0.0 for processor/loader (`scripts/rebuild_reference_datasets.py`). | `software_description.tex` §2.1, new paragraph after entity list | done |
+| R2.7 | p8, "-specific production rates," | "I believe utilization is considered here, because delays (operational/mechanical/ personal) has a major influence on the final cost of harvesting operations" | Explain: ladder rates come from published productivity models incl. their delay/utilisation allowances (ADV6N7 skidder utilisation 0.85; Berry 2019 processor delay multiplier 0.91; TN-261 loader 0.9); availability flags remove planned downtime; stochastic delays assessed in playback (downtime / weather / landing shocks). Acknowledge delays are not yet priced in schedule cost outputs (KPIs: mobilisation cost only in v1.0.0). | `software_description.tex` §2.1 bullets; `illustrative_example.tex` §3.2 disturbance description + manuscript sampling settings; `impact.tex` §4.4 new limitation | done |
+| R2.8 | p8, "re-solving" | "plays a key role during weather uncertainities and delays" | Agree; describe rolling-horizon driver (`fhops plan rolling`, SA/MILP, lock days; in v1.0.0) and companion rolling-horizon study. Do **not** claim realised-disruption feedback (not implemented). | `software_description.tex` §2.2 | done |
+| R2.9 | p10, parameter δ "cost" | "If market values of various products can be added it helps to estimate the revenue generated. This helps to get a better economic perspective of the harvesting operation." | Polite decline, no code change: revenue is fixed upstream by tactical-operational decisions (blocks, systems, prescriptions → assortment volumes); the operational model optimises execution of that fixed workload, so price does not change the optimal schedule. Note: FHOPS tactical-operational layer is **not** in v1.0.0, so it is not cited. | One clarifying sentence in `software_description.tex` §2 opening paragraph (planning hierarchy) | done |
+| R2.10 | p20, Figure caption "Deterministic vs. stochastic utilization" | "Please make the legends readable" | R1 already removed the overlapping suptitle/legend clipping. Remaining issue: ~10 pt fonts on a 12 in figure (≈5 pt at column width), lowercase `sa`/`ils` tick labels. Fix requires a change to `docs/softwarex/manuscript/scripts/plot_playback_variability.py` in `fhops` (separate fhops issue/PR), then `make assets`. | pending | open |
+
+## Side findings (not reviewer-facing; for `fhops` follow-up)
+- `planning/rolling.py` `_filter_and_rebase_blocks` does not reduce `work_required` by work completed in earlier windows; each window re-plans full block volume.
+- `LandingShockEvent.apply` decrements `remaining` per assignment row rather than per day; `DowntimeEvent` ignores `mean_duration_hours`/`std_duration_hours` (whole shift lost); `WeatherEvent` ignores `correlated_days`.
+- `Block.work_required` is documented as generic work units (e.g. machine-hours) but loader batching treats it as m³.

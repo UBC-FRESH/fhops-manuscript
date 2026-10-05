@@ -1,0 +1,41 @@
+Manuscript Number: SOFTX-D-26-00697R1 
+
+FHOPS: a reproducible optimisation and benchmarking stack for forest harvest operations 
+
+Dear Dr. Paradis,  
+
+Thank you for submitting your manuscript to SoftwareX. 
+
+I have completed my evaluation of your manuscript. The reviewers recommend reconsideration of your manuscript following minor revision and modification. I invite you to resubmit your manuscript after addressing the comments below. Please resubmit your revised manuscript by Nov 04, 2026. 
+
+To view your reviewer feedback, please log in as an author at https://www.editorialmanager.com/softx/ and navigate to your manuscript in the " Submissions Needing Revision " folder under the Author Main Menu. 
+
+When revising your manuscript, please consider all issues mentioned in the reviewers' comments carefully. Read the reviewers' comments in the peer review platform. Please note that your revised submission may need to be re-reviewed.
+
+SoftwareX values your contribution and I look forward to receiving your revised manuscript.￼ 
+
+IMPORTANT: Change of authorship at this stage is only possible in rare and truly justified cases. If you have strong arguments for changing the list of authors, please contact the editor and fill the required details in the given form : authorship-change-request-form.pdf. Kindly ensure to upload this form under the Cover Letter category.  Unless granted by the editor, do not submit a revised version of the manuscript with a changed author list. Non-respect may lead to a rejection of the paper that can't be appealed!
+
+Kind regards,  
+
+Randall Sobie 
+
+Editor-in-Chief 
+
+SoftwareX 
+
+Editor and Reviewer comments:  
+
+Editor - see the attached file for reviewer comments.  
+
+You might consider putting some of the equations in an appendix.
+
+
+
+Reviewer #1: All of my comments on the original version of the article have been reviewed and corrected. Therefore, I recommend the publication of this paper.
+
+
+Reviewer #2: The authors have done an excellent job. The application of software and process is well written and explained. I would suggest adding market price of products based on inventory which can give better insights on economic feasibility of the harvesting operations.
+  
+
+
