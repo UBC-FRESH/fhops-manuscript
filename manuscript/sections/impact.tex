@@ -13,11 +13,12 @@ Relative to the review paper \cite{jaffray2026systematic}, this manuscript contr
 The current release is an early public platform baseline. It demonstrates reproducible scheduling experiments on public BC reference scenarios and synthetic tiers (Section~\ref{sec:illustrative-example}), but does not claim broad external deployment evidence.
 
 \subsection{Transferability and limits}
-FHOPS is structured to support transfer to new contexts through scenario and parameter updates rather than solver rewrites. Three current limits remain explicit:
+FHOPS is structured to support transfer to new contexts through scenario and parameter updates rather than solver rewrites. Four current limits remain explicit:
 \begin{itemize}
   \item Validation breadth is still centred on a single harvest-system archetype (BC ground-based cut-to-length); skyline, helicopter, tethered, and salvage systems are not yet validated here and make no claim of generality beyond that archetype.
   \item Runtime comparisons are environment-dependent and should be interpreted as within-study baselines.
   \item Warm-start MIP integration is implemented, but decisive performance gains at larger stress cases are not yet claimed.
+  \item Delay effects are reported as utilisation and production losses in playback; schedule-level cost outputs currently cover mobilisation only and do not yet convert delays into standby or delay costs.
 \end{itemize}
 
 These limits keep the manuscript's claims aligned with demonstrated evidence.

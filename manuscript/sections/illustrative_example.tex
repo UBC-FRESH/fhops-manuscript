@@ -46,7 +46,7 @@ The synthetic-small row of Table~\ref{tab:benchmarks} deserves explanation: no b
 \end{table}
 
 \subsection{Operational question 2: schedule robustness under disturbance}
-Deterministic schedules are not sufficient for operational adoption, so leading schedules are replayed under deterministic and stochastic conditions.
+Deterministic schedules are not sufficient for operational adoption, so leading schedules are replayed under deterministic and stochastic conditions. Because operational, mechanical, and weather delays strongly affect delivered production and harvesting cost, stochastic playback keeps the solved schedule fixed and samples three disturbance types: machine downtime (a scheduled machine-shift is lost), weather (production on affected days is reduced by a sampled severity), and landing shocks (production at an affected landing is temporarily reduced). The manuscript runs use 50 samples per schedule, with event probabilities of 0.05 per scheduled machine-shift (downtime), 0.10 per day (weather), and 0.05 per landing and sample (landing shocks).
 
 Figure~\ref{fig:playback} shows that disturbance sensitivity is scenario- and method-dependent. For example, average day-level utilization in tiny7 changes from 0.37 (deterministic) to 0.35 (stochastic) for both SA and ILS, while med42 changes from 0.56 to 0.53 for SA and from 0.56 to 0.54 for ILS. Synthetic-small shows a similar directional drop (0.62 to 0.59). This reinforces a practical selection rule: schedule quality should be judged jointly by objective value and robustness metrics, not objective value alone.
 
