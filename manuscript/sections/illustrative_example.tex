@@ -2,7 +2,7 @@
 \section{Illustrative example}
 \label{sec:illustrative-example}
 
-This section evaluates FHOPS on the public BC ground-based ladder (tiny7, small21, med42) plus synthetic scaling tiers. In this ladder, horizons increase from 7 to 21 to 42 days and block counts from 2 to 6 to 12 with the same 9-machine role mix. The goal is a reproducible baseline for practitioner interpretation and follow-on modelling studies, consistent with review-identified reproducibility gaps \cite{jaffray2025systematic}.
+This section evaluates FHOPS on the public BC ground-based ladder (tiny7, small21, med42) plus synthetic scaling tiers. In this ladder, horizons increase from 7 to 21 to 42 days and block counts from 2 to 6 to 12 with the same 9-machine role mix. The goal is a reproducible baseline for practitioner interpretation and follow-on modelling studies, consistent with review-identified reproducibility gaps \cite{jaffray2026systematic}.
 
 We organize the results around three operational questions:
 \begin{enumerate}
@@ -16,16 +16,18 @@ Table~\ref{tab:benchmarks} summarizes SA, ILS, and Tabu outcomes by scenario. Th
 \begin{itemize}
   \item \textbf{Small instance (tiny7):} objectives are tightly grouped (4306.52--4349.26) and production is identical (4414.70~m$^3$), while runtime spans 32.71--292.53~s.
   \item \textbf{Intermediate instance (small21):} objective spread remains narrow (15627.57--15660.01) with identical production (15966.97~m$^3$), but runtime spans 77.94--414.78~s and mobilisation cost spans 1924.56--2243.76~CAD.
-  \item \textbf{Larger instance in this ladder (med42):} KPI ordering is not uniform across objective, production, and runtime (objective: $-28271.22$ to $-46063.73$; production: 30026.28--32702.07~m$^3$; runtime: 124.48--182.33~s), so solver selection should follow planning priorities rather than one headline score.
+  \item \textbf{Larger instance in this ladder (med42):} KPI ordering is not uniform across objective, production, and runtime (objective: $-27271.22$ to $-46063.73$; production: 30026.28--33025.19~m$^3$; runtime: 1245.04--7391.10~s), so solver selection should follow planning priorities rather than one headline score. Objectives are negative under the fixed weight calibration of Section~\ref{sec:software-description} (a penalty- and mobilisation-dominated instance), not because the optimisation sense changes: under the shared maximisation convention, $-27271.22$ (SA) is the best med42 score.
 \end{itemize}
 
-Table~\ref{tab:tuning} adds parameter-search evidence. Reported $\Delta$ values versus the SA default are 42.74 (tiny7), 10.23 (small21), 11454.66 (med42), and 0.00 (synthetic-small), showing scenario-dependent tuning impact. Controlled tuning can therefore improve schedules without changing the underlying data contract \cite{nelson2003forestmodels}.
+Table~\ref{tab:tuning} adds parameter-search evidence. Reported $\Delta$ values versus the SA default are 42.74 (tiny7), 10.23 (small21), $-8214.08$ (med42), and 0.00 (synthetic-small); a negative $\Delta$ on med42 means the best tuner score found ($-35485.30$, Bayes) is \emph{worse} than the SA default ($-27271.22$) under the maximisation convention, i.e.\ the parameter search did not beat the default on that instance. Tuning impact is therefore scenario-dependent: it improved tiny7 and small21, left synthetic-small unchanged, and did not overcome med42's penalty-dominated basin. This reinforces that tuning results should be interpreted per scenario rather than as a uniform improvement \cite{nelson2003forestmodels}.
+
+The synthetic-small row of Table~\ref{tab:benchmarks} deserves explanation: no block volume is delivered within its access windows, so stated production is $0.00\,$m$^3$ while the full $39.79\,$m$^3$ workload remains staged at horizon end, and every heuristic returns the identical penalty-dominated score ($-75039.79$). Identical scores across all three deterministic solvers confirm that the objective punishes infeasible schedules and that none of the heuristics finds an improving move on this degenerate instance; the row is retained as a reproducibility anchor, not as evidence of solver behaviour.
 
 \begin{table}[t]
   \centering
   \small
   \setlength{\tabcolsep}{4pt}
-  \caption{Solver performance across the reference scenarios. Objective values are compared within scenario (not across scenarios) because sign and scaling differ by dataset/weight profile.}
+  \caption{Solver performance across the reference scenarios. Objective values are compared within scenario (not across scenarios) because sign and scaling differ by dataset/weight profile; see the objective-weight and sign-convention note in Section~\ref{sec:software-description}.}
   \label{tab:benchmarks}
   \resizebox{\linewidth}{!}{
   \input{sections/includes/solver_performance.tex}
@@ -36,7 +38,7 @@ Table~\ref{tab:tuning} adds parameter-search evidence. Reported $\Delta$ values 
   \centering
   \small
   \setlength{\tabcolsep}{4pt}
-  \caption{Best-performing tuner per scenario (delta measured against SA's default preset).}
+  \caption{Best-performing tuner per scenario ($\Delta$ is the signed change in best objective against SA's default preset; negative $\Delta$ = worse than the default, e.g.\ med42).}
   \label{tab:tuning}
   \resizebox{\linewidth}{!}{
   \input{sections/includes/tuning_leaderboard.tex}
@@ -56,7 +58,7 @@ Figure~\ref{fig:playback} shows that disturbance sensitivity is scenario- and me
 \end{figure}
 
 \subsection{Operational question 3: cost interpretation and scaling behavior}
-Cost summaries complement utilization and production metrics by translating schedule effects into operating implications. On med42, mobilization cost in Table~\ref{tab:benchmarks} spans 9846.12--10662.28~CAD across solver choices, indicating that comparable schedule quality can imply different movement-cost profiles. In this baseline, costing is used for within-study comparison, not external economic extrapolation.
+Cost summaries complement utilization and production metrics by translating schedule effects into operating implications. On med42, mobilization cost in Table~\ref{tab:benchmarks} spans 9846.12--10682.68~CAD across solver choices, indicating that comparable schedule quality can imply different movement-cost profiles. In this baseline, costing is used for within-study comparison, not external economic extrapolation.
 
 Scaling results from synthetic tiers (Figure~\ref{fig:scaling}) show increasing runtime under fixed solver budgets: 31.81~s (small, 4 blocks), 84.88~s (medium, 8 blocks), and 108.97~s (large, 16 blocks). The value is a reproducible scale signal measured in the same platform used for benchmark and robustness reporting.
 

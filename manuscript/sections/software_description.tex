@@ -16,7 +16,7 @@ The platform uses a typed scenario contract allowing solver results to be compar
 
 FHOPS ships a public BC ground-based reference ladder (tiny7, small21, med42) that scales from 7/2 to 21/6 to 42/12 (days/blocks) while keeping one operational archetype.
 
-This addresses a central review finding \cite{jaffray2025systematic}: transfer fails when assumptions are embedded in bespoke code rather than explicit scenario data. Generalizability is supported structurally through this scenario contract, which separates operational assumptions from solver logic. Empirical validation across additional system families remains future work.
+This addresses a central review finding \cite{jaffray2026systematic}: transfer fails when assumptions are embedded in bespoke code rather than explicit scenario data. Generalizability is supported structurally through this scenario contract, which separates operational assumptions from solver logic. Empirical validation across additional system families remains future work.
 
 \subsection{Solution methods for operational decisions}
 FHOPS provides complementary solver families for different planning horizons and time budgets:
@@ -29,6 +29,9 @@ FHOPS provides complementary solver families for different planning horizons and
 This reflects established forestry operations research (OR) practice: exact models support formulation clarity and benchmark bounds, while heuristics support larger-scale operational runs \cite{paradis2018bilevel,nelson2003forestmodels}.
 
 Warm-start support is implemented for MIP, but this paper does not claim decisive wall-clock gains on med42/large84 stress contexts.
+
+\subsection*{Objective-weight and sign convention}
+Both the MILP baseline and the SA/ILS/Tabu heuristics maximise the same weighted score defined by the \textbf{OBJ} expression in the canonical formulation below: production reward minus mobilisation, transition, and landing-surplus penalties minus a per-violation penalty on hard feasibility constraints. The base weights are part of the scenario contract (\texttt{objective\_weights} in each \texttt{scenario.yaml}) and default to $\omega_{\text{prod}}=1.0$, $\omega_{\text{mob}}=1.0$, $\omega_{\text{trans}}=0.0$, $\omega_{\text{land}}=0.0$. The shipped calibration is three-tier. All four reference scenarios (tiny7, small21, med42, large84) declare $\omega_{\text{prod}}=1.0$, $\omega_{\text{mob}}=0.5$ in their scenario contracts. The two smallest reference scenarios (tiny7, small21) additionally auto-apply reduced relocation weights, $\omega_{\text{prod}}=1.0$, $\omega_{\text{mob}}=0.2$, $\omega_{\text{trans}}=0.1$, $\omega_{\text{land}}=0.05$, inside the SA/ILS/Tabu drivers to encourage exploration on instances where the full mobilisation penalty would trap the search in a degenerate zero-production basin. The synthetic scaling tiers (small/medium/large) declare no \texttt{objective\_weights} and therefore use the defaults. A negative objective value therefore marks a penalty- or mobilisation-dominated instance, not a change of optimisation sense: the more positive (less negative) score is always the better solution, and the relative ordering within a scenario is the quantity the benchmark tables report.
 
 \subsection{Operational MILP and equation-to-code traceability}
 The deterministic operational MILP is presented in canonical form below. Equation blocks are labeled as OBJ, E1--E11, and D1.
@@ -47,9 +50,13 @@ Internally, FHOPS separates four concerns:
   \item \textbf{Reporting layer}: generation of tables/figures used in manuscript and documentation outputs.
 \end{enumerate}
 
+Figure~\ref{fig:fhops-prisma-overview} summarises how these layers connect: versioned scenario contracts and reference/synthetic datasets enter the FHOPS core for validation, solving, and evaluation, and the asset scripts emit the shared tables and figures that feed both this manuscript and the public documentation.
+
+\input{sections/includes/prisma_overview}
+
 The software is available through Python modules and command-line wrappers. Interface choice is secondary to preserving equivalent, traceable evidence across runs. FHOPS is released under an MIT license, with source code, datasets, and experiment pipelines in a public repository to support reuse and independent verification.
 
 \subsection{Reproducible evidence pipeline}
 Manuscript evidence comes from versioned benchmark, tuning, playback, costing, and scaling assets produced by the same platform layers. Run logs and artifact paths provide provenance for each reported value.
 
-This arrangement is deliberate in the manuscript sequence: the review identifies missing reproducibility infrastructure \cite{jaffray2025systematic}, this paper contributes it as reusable software, and companion modelling studies can focus on method questions without redefining data contracts or reporting conventions.
+This arrangement is deliberate in the manuscript sequence: the review identifies missing reproducibility infrastructure \cite{jaffray2026systematic}, this paper contributes it as reusable software, and companion modelling studies can focus on method questions without redefining data contracts or reporting conventions.

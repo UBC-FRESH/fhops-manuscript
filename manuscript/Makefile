@@ -12,6 +12,8 @@ EXTRAS_ASSETS=$(MANUSCRIPT_ROOT)/extras/assets
 ASSET_SOURCE?=$(if $(wildcard $(LOCAL_ASSETS)),$(LOCAL_ASSETS),$(if $(wildcard $(EXTRAS_ASSETS)),$(EXTRAS_ASSETS),$(FHOPS_SOFTWAREX)/assets))
 ELSARTICLE_DIR=elsarticle
 ELSARTICLE_CLS=$(ELSARTICLE_DIR)/elsarticle.cls
+PDF_CMD?=latexmk -pdf -interaction=nonstopmode -output-directory=$(BUILD_DIR) -auxdir=$(BUILD_DIR) $(TEX)
+CLEAN_CMD?=latexmk -C -output-directory=$(BUILD_DIR) -auxdir=$(BUILD_DIR)
 
 export TEXINPUTS:=$(abspath $(ELSARTICLE_DIR))//:$(TEXINPUTS)
 export BSTINPUTS:=$(abspath $(ELSARTICLE_DIR))//:$(BSTINPUTS)
@@ -45,10 +47,11 @@ submission-package: all
 	install -m 0644 sections/software_description.tex sections/illustrative_example.tex "$(SUBMISSION_DIR)/"
 	install -m 0644 sections/impact.tex sections/conclusions.tex sections/acknowledgments.tex "$(SUBMISSION_DIR)/"
 	install -m 0644 sections/includes/fhops_operational_formulation.tex "$(SUBMISSION_DIR)/"
+	install -m 0644 sections/includes/prisma_overview.tex "$(SUBMISSION_DIR)/"
 	install -m 0644 sections/includes/solver_performance.tex sections/includes/tuning_leaderboard.tex "$(SUBMISSION_DIR)/"
 	install -m 0644 sections/includes/utilisation_robustness.png sections/includes/runtime_vs_blocks.png "$(SUBMISSION_DIR)/"
 	install -m 0644 "$(ELSARTICLE_CLS)" "$(ELSARTICLE_DIR)/elsarticle-num.bst" "$(SUBMISSION_DIR)/"
-	perl -0pi -e 's/\{sections\/(highlights|abstract|introduction|software_description|illustrative_example|impact|conclusions|acknowledgments)\}/{$$1}/g; s/\{metadata\/(code_metadata|current_code_version)\}/{$$1}/g; s/\{sections\/includes\/fhops_operational_formulation\}/{fhops_operational_formulation}/g; s/\{sections\/includes\/solver_performance\.tex\}/{solver_performance.tex}/g; s/\{sections\/includes\/tuning_leaderboard\.tex\}/{tuning_leaderboard.tex}/g; s/\{sections\/includes\/utilisation_robustness\.png\}/{utilisation_robustness.png}/g; s/\{sections\/includes\/runtime_vs_blocks\.png\}/{runtime_vs_blocks.png}/g' "$(SUBMISSION_DIR)"/*.tex
+	perl -0pi -e 's/\{sections\/(highlights|abstract|introduction|software_description|illustrative_example|impact|conclusions|acknowledgments)\}/{$$1}/g; s/\{metadata\/(code_metadata|current_code_version)\}/{$$1}/g; s/\{sections\/includes\/fhops_operational_formulation\}/{fhops_operational_formulation}/g; s/\{sections\/includes\/prisma_overview\}/{prisma_overview}/g; s/\{sections\/includes\/solver_performance\.tex\}/{solver_performance.tex}/g; s/\{sections\/includes\/tuning_leaderboard\.tex\}/{tuning_leaderboard.tex}/g; s/\{sections\/includes\/utilisation_robustness\.png\}/{utilisation_robustness.png}/g; s/\{sections\/includes\/runtime_vs_blocks\.png\}/{runtime_vs_blocks.png}/g' "$(SUBMISSION_DIR)"/*.tex
 	cd "$(SUBMISSION_DIR)" && zip -q "../$(SUBMISSION_NAME).zip" *
 	@printf 'Wrote %s\n' "$(SUBMISSION_ZIP)"
 
@@ -57,11 +60,11 @@ $(ELSARTICLE_CLS): $(ELSARTICLE_DIR)/elsarticle.ins $(ELSARTICLE_DIR)/elsarticle
 
 $(PDF): $(TEX) $(ELSARTICLE_CLS)
 	mkdir -p $(BUILD_DIR)
-	latexmk -pdf -interaction=nonstopmode -output-directory=$(BUILD_DIR) -auxdir=$(BUILD_DIR) $(TEX)
+	$(PDF_CMD)
 
 default: pdf
 
 clean:
-	latexmk -C -output-directory=$(BUILD_DIR) -auxdir=$(BUILD_DIR)
+	$(CLEAN_CMD)
 	$(RM) -r $(BUILD_DIR)
 	$(RM) "$(ELSARTICLE_CLS)" "$(ELSARTICLE_DIR)/elsarticle.log"
