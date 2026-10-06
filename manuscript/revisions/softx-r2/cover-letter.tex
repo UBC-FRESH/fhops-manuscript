@@ -1,0 +1,59 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlist[itemize]{nosep,leftmargin=1.4em}
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{flushright}
+Faculty of Forestry \& Environmental Stewardship\\
+University of British Columbia\\
+2424 Main Mall, Vancouver, BC V6T 1Z4, Canada\\
+\href{mailto:gregory.paradis@ubc.ca}{gregory.paradis@ubc.ca}\\[0.5em]
+% TODO(date): set on upload
+October 2026
+\end{flushright}
+
+Randall Sobie, Editor-in-Chief\\
+\textit{SoftwareX}
+
+\textbf{Re: SOFTX-D-26-00697R2, ``FHOPS: a reproducible optimisation and benchmarking stack for forest harvest operations''}
+
+Dear Dr. Sobie,
+
+Please find enclosed the revised manuscript, together with a marked-up manuscript and a point-by-point response to your comment and those of both reviewers.
+
+We thank you and the reviewers for their positive assessment. As you suggested, the complete operational MILP formulation and its equation-to-code mapping now appear in an appendix, with a concise summary kept in Section~2. In response to Reviewer~\#2 we have:
+\begin{itemize}
+  \item clarified where the operational model sits in the planning hierarchy and its scope boundary at the landing;
+  \item explained how utilisation and delays are represented, how coupled and decoupled systems can be compared, and how rolling-horizon re-solving is supported;
+  \item revised the keywords, expanded the FHOPS acronym in the abstract, and redrawn the playback figure for legibility.
+\end{itemize}
+
+\textbf{Software correction (FHOPS~1.0.1).} We want to draw your attention to one further change. The careful review prompted us to re-examine the code paths behind several reviewer questions, and in doing so we found defects in FHOPS~1.0.0:
+\begin{itemize}
+  \item the rolling-horizon driver did not carry block progress, staged inventories, or machine positions from one planning window to the next;
+  \item the stochastic playback applied landing shocks and downtime durations incorrectly;
+  \item warm-starting the MILP with the default open-source solver (HiGHS) failed.
+\end{itemize}
+Rather than defer or work around these defects, we fixed them, added regression tests, and published FHOPS~1.0.1, which the revised manuscript now cites. The deterministic benchmark, tuning, and scaling results are reproduced exactly under FHOPS~1.0.1 and are unchanged. Because of the playback fix, the stochastic utilisation values in Section~3.2 changed slightly (by at most 0.02); the conclusions drawn from them are unchanged.
+% TODO(thesis): one sentence on the companion rolling-horizon study once the re-run on FHOPS 1.0.1 is analysed (re-confirmed / revised wording in Sections 1, 2.2, 4.2, 5).
+All changes are listed in the response letter and highlighted in the marked-up manuscript.
+
+The source code is released under the MIT License at \url{https://github.com/UBC-FRESH/fhops} (release \href{https://github.com/UBC-FRESH/fhops/releases/tag/v1.0.1}{v1.0.1}; \href{https://pypi.org/project/fhops/1.0.1/}{PyPI}), and the revised submission includes editable LaTeX sources and reproducible benchmark assets.
+
+The author list is unchanged from the original submission. All authors have reviewed and approved the revision. The work remains original and is not under consideration elsewhere.
+
+Thank you for reconsidering the manuscript. We hope the revision is now suitable for publication in \textit{SoftwareX}.
+
+Sincerely,\\[1.5em]
+Gregory Paradis, Ph.D.\\
+Corresponding author, on behalf of all authors
+
+\end{document}

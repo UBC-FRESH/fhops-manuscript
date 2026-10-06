@@ -165,3 +165,40 @@ now sits in a single row above the panels, the solver labels are in upper case (
 the caption has been corrected. While regenerating this figure we found and fixed defects in
 FHOPS's stochastic playback events. As a result, the stochastic utilisation values in
 Section 3.2 changed slightly; see the note on FHOPS 1.0.1 at the end of this letter.
+
+---
+
+## Note on FHOPS 1.0.1 (software correction)
+
+While answering the reviewer's questions on delays, re-solving, and figure legibility (R2.7, R2.8,
+R2.10), we re-examined the corresponding FHOPS code paths. We found defects in FHOPS 1.0.0. Our
+choice was to fix them and say so openly, rather than defer, work around, or silently omit them:
+
+1. **Rolling-horizon driver.** State was not carried from one planning window to the next.
+   Each window re-planned every block's full volume, including volume already delivered in
+   earlier locked days. Staged inventory between harvesting roles restarted at zero. Machine
+   positions, user-specified locks, and blackout calendars were not carried across window
+   boundaries.
+2. **Stochastic playback.** Landing shocks were applied to individual assignments rather than
+   to calendar days. Machine downtime always removed a whole shift, ignoring the configured
+   duration distribution.
+3. **MILP warm start.** Warm-starting the operational MILP failed with the default open-source
+   solver (HiGHS).
+
+All three are fixed, with regression tests, in **FHOPS 1.0.1**
+(https://github.com/UBC-FRESH/fhops/releases/tag/v1.0.1; `pip install fhops==1.0.1`). The code
+metadata tables now cite this release.
+
+Effect on the manuscript:
+
+- **Deterministic results** (benchmark, tuning, and scaling: Tables 4–5 and the scaling figure)
+  are reproduced exactly under FHOPS 1.0.1 and are unchanged. When no initial state is supplied,
+  the solvers' behaviour is identical to 1.0.0, and this is covered by regression tests.
+- **Stochastic playback** (Section 3.2, playback figure): mean stochastic utilisation changed by
+  at most 0.02. The interpretation is unchanged.
+- **Formulation (Appendix A):** the equations now state the optional initial-state terms
+  (initial staged inventory and boundary transition) and lock enforcement used for re-planning.
+  With the defaults, they reduce to the original formulation.
+- **Companion rolling-horizon study:** [Pending: outcome of the re-run of the companion study's
+  experiment grid on FHOPS 1.0.1 and any resulting wording changes in Sections 1, 2.2, 4.2,
+  and 5.]
