@@ -21,7 +21,7 @@ this revision we have:
    (R2.8).
 4. Revised the keywords (R2.2), spelled out FHOPS in the abstract (R2.3), and improved the
    legibility of the playback figure (R2.10).
-5. [Pending] Moved the full operational MILP formulation to an appendix, as the editor
+5. Moved the full operational MILP formulation to an appendix, as the editor
    suggested (E.1).
 
 Reviewer #2's annotations were made on the PDF of the original submission. Below we refer to
@@ -33,7 +33,11 @@ sections of the revised manuscript.
 
 ### E.1 "You might consider putting some of the equations in an appendix."
 
-**Response:** [Pending decision.]
+**Response:** Done. The complete canonical formulation now appears in Appendix A: sets,
+parameters, variables, the objective, constraint blocks E1–E11, domain declarations, and the
+equation-to-code mapping table. Section 2.3 keeps a short prose summary of the objective and of
+each constraint family, together with the traceability argument. This shortens the main text
+without losing the auditable link between the equations and the implementation.
 
 ---
 
@@ -141,6 +145,12 @@ or solve this scheduling problem. The objective instead rewards delivering the p
 and penalises volume left unharvested. Economic feasibility in the revenue-and-margin sense is
 evaluated at the tactical-operational level, where the revenue-determining decisions are
 actually made.
+
+We note that, since this manuscript was first submitted, FHOPS has gained a very early-alpha
+tactical-operational planning layer, published as pre-release FHOPS 1.1.0a1. It includes
+product values at mills and terminals and profit or net-present-value objectives, which is the
+planning level where the reviewer's suggestion applies. That layer is provisional and outside
+the scope of this paper; Section 4.3 now mentions it briefly.
 
 To make this explicit to readers, we added a sentence to the opening paragraph of Section 2. It
 positions the operational model below tactical-operational planning and explains why the
