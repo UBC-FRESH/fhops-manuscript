@@ -158,6 +158,10 @@ objective concerns schedule execution rather than profit.
 
 ### R2.10 (Figure: deterministic vs. stochastic utilisation) "Please make the legends readable"
 
-**Response:** [Pending.] The overlapping title and clipped legend in the original submission were
-already corrected in the first revision. In this revision we regenerated the figure with larger
-fonts, a clearly separated legend, and upper-case solver labels (SA, ILS).
+**Response:** Done. The overlapping title and clipped legend in the original submission were
+already corrected in the first revision. In this revision the figure is redrawn at the
+manuscript text width, so all text, including the legend, prints at 9 pt or larger. The legend
+now sits in a single row above the panels, the solver labels are in upper case (SA, ILS), and
+the caption has been corrected. While regenerating this figure we found and fixed defects in
+FHOPS's stochastic playback events. As a result, the stochastic utilisation values in
+Section 3.2 changed slightly; see the note on FHOPS 1.0.1 at the end of this letter.
