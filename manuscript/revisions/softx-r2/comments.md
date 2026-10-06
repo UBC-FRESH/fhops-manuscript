@@ -24,7 +24,16 @@
 | R2.9 | p10, parameter δ "cost" | "If market values of various products can be added it helps to estimate the revenue generated. This helps to get a better economic perspective of the harvesting operation." | Polite decline, no code change: revenue is fixed upstream by tactical-operational decisions (blocks, systems, prescriptions → assortment volumes); the operational model optimises execution of that fixed workload, so price does not change the optimal schedule. Note: FHOPS tactical-operational layer is **not** in v1.0.0, so it is not cited. | One clarifying sentence in `software_description.tex` §2 opening paragraph (planning hierarchy) | done |
 | R2.10 | p20, Figure caption "Deterministic vs. stochastic utilization" | "Please make the legends readable" | R1 already removed the overlapping suptitle/legend clipping. Remaining issue: ~10 pt fonts on a 12 in figure (≈5 pt at column width), lowercase `sa`/`ils` tick labels. Fix requires a change to `docs/softwarex/manuscript/scripts/plot_playback_variability.py` in `fhops` (separate fhops issue/PR), then `make assets`. | pending | open |
 
-## Side findings (not reviewer-facing; for `fhops` follow-up)
-- `planning/rolling.py` `_filter_and_rebase_blocks` does not reduce `work_required` by work completed in earlier windows; each window re-plans full block volume.
+## Side findings (for `fhops` follow-up; decision 2026-10-06: fix all, re-check thesis, disclose)
+- `planning/rolling.py` (identical in v1.0.0 and `main`) carries **no state** between windows, contrary to `notes/rolling_horizon_plan.md` (which marks demand/inventory carry-forward as done):
+  - `_filter_and_rebase_blocks` keeps full `work_required` for every block (finished blocks re-planned).
+  - Staged role inventories restart at zero each window (MILP `inventory_start == 0` at first slot; tracker `role_inventory` starts empty); upstream role progress (`role_remaining`) is not carried.
+  - No initial machine position: first-shift moves in a window are free in the solve but charged in stitched playback.
+  - User `Scenario.locked_assignments` are lost: hooks overwrite with `[]` in iteration 0, and slices ignore them from iteration 1. Locks from earlier windows are never active inside a window (by construction), and the operational MILP builder ignores locks entirely.
+  - `ScheduleLock` has no `shift_id`; hooks drop `shift_id`/`production`, creating duplicate (machine, day) locks in multi-shift scenarios.
+  - `copy.timeline` (blackouts) not rebased into window coordinates.
+  - SA hook `runtime_s` always `None`; MILP hook default `solver="auto"` passed to `SolverFactory` unchanged.
+  - No test asserts carry-forward behaviour; `docs/howto/rolling_horizon.rst` overstates lock handling.
+- Thesis impact: Jaffray MASc Ch. 4 ran `fhops plan rolling` (editable fhops `1.0.0a2`) over 3 contexts × 3 sizes × θ∈{2,4,8,16} wk × lock∈{1,7,14} d × {SA, MIP/HiGHS 1800 s} = 216 runs; metric = last-iteration window objective (`json_processing_to_summary.py`), not stitched-plan KPIs. Findings cited in manuscript §1, §2.2, §4.2, §5 must be re-checked on fixed code using stitched-plan evaluation (`compute_rolling_kpis`).
 - `LandingShockEvent.apply` decrements `remaining` per assignment row rather than per day; `DowntimeEvent` ignores `mean_duration_hours`/`std_duration_hours` (whole shift lost); `WeatherEvent` ignores `correlated_days`.
 - `Block.work_required` is documented as generic work units (e.g. machine-hours) but loader batching treats it as m³.
