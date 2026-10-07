@@ -29,21 +29,21 @@ Dear Dr. Sobie,
 
 Please find enclosed the revised manuscript, together with a marked-up manuscript and a point-by-point response to your comment and those of both reviewers.
 
-We thank you and the reviewers for their positive assessment. As you suggested, the complete operational MILP formulation and its equation-to-code mapping now appear in an appendix, with a concise summary kept in Section~2. In response to Reviewer~\#2 we have:
+We thank you and the reviewers for their positive assessment. As you suggested, the complete operational MILP formulation, with labelled constraint blocks and their equation-to-code mapping, now appears in an appendix, with a concise summary kept in Section~2. In response to Reviewer~\#2 we have:
 \begin{itemize}
   \item clarified where the operational model sits in the planning hierarchy and its scope boundary at the landing;
   \item explained how utilisation and delays are represented, how coupled and decoupled systems can be compared, and how rolling-horizon re-solving is supported;
   \item revised the keywords, expanded the FHOPS acronym in the abstract, and redrawn the playback figure for legibility.
 \end{itemize}
 
-\textbf{Software correction (FHOPS~1.0.1).} We want to draw your attention to one further change. The careful review prompted us to re-examine the code paths behind several reviewer questions, and in doing so we found defects in FHOPS~1.0.0:
+\textbf{Software correction (FHOPS~1.0.1).} We want to draw your attention to one further change. The careful review prompted us to re-examine the code paths behind several reviewer questions and then to audit FHOPS~1.0.0 more broadly. In doing so we found defects:
 \begin{itemize}
-  \item the rolling-horizon driver did not carry block progress, staged inventories, or machine positions from one planning window to the next;
-  \item the stochastic playback applied landing shocks and downtime durations incorrectly;
-  \item warm-starting the MILP with the default open-source solver (HiGHS) failed.
+  \item the rolling-horizon driver did not carry block progress, staged inventories, machine positions, or locks from one planning window to the next;
+  \item the stochastic playback applied landing shocks and downtime durations incorrectly, and warm-starting the MILP with the default open-source solver (HiGHS) failed;
+  \item several MILP constraint blocks did not match the rules used by the heuristics and playback (staged inventories per upstream role, landing capacity per shift and binding by default, moves across idle shifts, the loader truckload threshold, and loader batching variables that imposed nothing);
+  \item the SA, ILS, and Tabu heuristics could report an objective higher than that of the schedule they returned, and their repair step could overload landings or starve downstream roles.
 \end{itemize}
-Rather than defer or work around these defects, we fixed them, added regression tests, and published FHOPS~1.0.1, which the revised manuscript now cites. The deterministic benchmark, tuning, and scaling results are reproduced exactly under FHOPS~1.0.1 and are unchanged. Because of the playback fix, the stochastic utilisation values in Section~3.2 changed slightly (by at most 0.02); the conclusions drawn from them are unchanged.
-% TODO(thesis): one sentence on the companion rolling-horizon study once the re-run on FHOPS 1.0.1 is analysed (re-confirmed / revised wording in Sections 1, 2.2, 4.2, 5).
+Rather than defer or work around these defects, we fixed them, added regression tests, tightened scenario validation, retired an unused legacy MIP model, and published FHOPS~1.0.1, which the revised manuscript now cites. Appendix~A states the corrected formulation. Because the corrections change solver results, we regenerated every benchmark, tuning, playback, and scaling result on FHOPS~1.0.1; Tables~4 and~5, the values in Section~3, and the result figures have changed accordingly. \textbf{[NUMBERS PENDING: one sentence on the size of the changes and whether the conclusions of Section~3 hold.]} \textbf{[THESIS PENDING: one sentence on the companion rolling-horizon study once its re-run on FHOPS~1.0.1 is analysed.]}
 All changes are listed in the response letter and highlighted in the marked-up manuscript.
 
 The source code is released under the MIT License at \url{https://github.com/UBC-FRESH/fhops} (release \href{https://github.com/UBC-FRESH/fhops/releases/tag/v1.0.1}{v1.0.1}; \href{https://pypi.org/project/fhops/1.0.1/}{PyPI}), and the revised submission includes editable LaTeX sources and reproducible benchmark assets.

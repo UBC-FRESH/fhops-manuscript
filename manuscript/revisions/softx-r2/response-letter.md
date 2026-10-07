@@ -22,7 +22,10 @@ this revision we have:
 4. Revised the keywords (R2.2), spelled out FHOPS in the abstract (R2.3), and improved the
    legibility of the playback figure (R2.10).
 5. Moved the full operational MILP formulation to an appendix, as the editor
-   suggested (E.1).
+   suggested (E.1), with labelled constraint blocks and an equation-to-code table.
+6. Corrected defects in FHOPS that the review led us to find, released FHOPS 1.0.1, and
+   regenerated every benchmark, tuning, playback, and scaling result on that release (see the
+   note on FHOPS 1.0.1 at the end of this letter).
 
 Reviewer #2's annotations were made on the PDF of the original submission. Below we refer to
 sections of the revised manuscript.
@@ -33,10 +36,16 @@ sections of the revised manuscript.
 
 ### E.1 "You might consider putting some of the equations in an appendix."
 
-**Response:** Done. The complete canonical formulation now appears in Appendix A: sets,
-parameters, variables, the objective, constraint blocks E1–E11, domain declarations, and the
-equation-to-code mapping table. Section 2.3 keeps a short prose summary of the objective and of
-each constraint family, together with the traceability argument. This shortens the main text
+**Response:** Done. Appendix A now gives the complete formulation of the operational MILP as
+implemented in FHOPS 1.0.1: sets, parameters, decision variables, the objective (OBJ), the
+constraint blocks (E1–E13), the optional initial state (INIT) and earliness tie-break (OBJ2),
+the domain declarations (D1), and a table that maps each labelled block to the Pyomo objects that
+implement it. Blocks that persist from FHOPS 1.0.0 keep their labels (E1–E11). E6 (machine
+moves), E7 (staged inventory), E8 (activation and head start, now E8a–E8c), E9 (loader truckload
+threshold) and E11 (landing capacity per shift) were reformulated in 1.0.1, and E12 (remaining
+output) and E13 (locked assignments) are new. A short paragraph at the end of the appendix
+summarises what changed from FHOPS 1.0.0. Section 2.3 keeps a prose summary of the objective
+and of each constraint family, with the traceability argument. This shortens the main text
 without losing the auditable link between the equations and the implementation.
 
 ---
@@ -76,15 +85,17 @@ Operations Planning System (FHOPS) addresses that requirement…".
 ### R2.5 (Section 2) "Does this include trucking"
 
 **Response:** No. The operational model schedules the in-block machine roles up to and including
-loading at the landing. Loader output is counted in truckload-sized batches (constraint block
-E9), but haul transport (truck fleets, dispatching, and delivery to mills) is outside the model.
+loading at the landing. A loader works only once a truckload (or the block's remaining volume,
+if smaller) is staged at the landing (constraint block E9), but haul transport (truck fleets,
+dispatching, and delivery to mills) is outside the model.
 We now state this boundary explicitly in the opening paragraph of Section 2.
 
 ### R2.6 (Section 2) "Helps in decision making to have a coupled or decoupled harvesting system"
 
 **Response:** We agree, and we now make this capability explicit in Section 2.1. Each role can be
 given a head-start (in shifts of upstream output), which sets the staged buffer B_{r,b} in
-constraint block E8:
+constraint block E8b (the buffer is waived once the upstream roles have finished the block,
+E8c):
 
 - A positive head-start represents a decoupled system, e.g. a roadside processor that starts
   only once a deck has accumulated.
@@ -93,7 +104,7 @@ constraint block E8:
 
 Users can therefore compare both configurations on the same scenario and data contract. The
 reference ladder uses zero head-start for processing and loading, apart from the loader's
-truckload batch.
+truckload threshold (E9).
 
 ### R2.7 (Section 2.1, production rates) "I believe utilization is considered here, because delays (operational/mechanical/ personal) has a major influence on the final cost of harvesting operations"
 
@@ -118,9 +129,15 @@ convert delays into standby or delay costs.
 **Response:** We agree. Section 2.2 now notes that FHOPS ships a rolling-horizon driver
 (`fhops plan rolling`). It re-solves successive planning windows with the SA or MILP solver
 while locking near-term decisions, which supports periodic re-planning after weather or delay
-disruptions. The design of such rolling-horizon re-optimisation (planning-horizon length and
-re-optimisation frequency) is evaluated in the companion study cited in the manuscript, across
-three BC operating contexts and three problem sizes.
+disruptions. Before each window, the locked plan is replayed and its state (remaining block
+volume, staged inventories, machine positions, and locks) is carried into the next window; MILP
+windows add an earliness tie-break so that they do not defer work beyond the locked days. While
+preparing this answer we found that FHOPS 1.0.0 did not carry this state between windows; the
+correction is part of FHOPS 1.0.1 (see the note at the end of this letter). The design of
+rolling-horizon re-optimisation (planning-horizon length and re-optimisation frequency) is
+evaluated in the companion study cited in the manuscript, across three BC operating contexts and
+three problem sizes. [THESIS PENDING: outcome of the re-run of the companion study's experiment
+grid on FHOPS 1.0.1.]
 
 ### R2.9 (Section 2.3, mobilisation cost parameter) "If market values of various products can be added it helps to estimate the revenue generated. This helps to get a better economic perspective of the harvesting operation."
 
@@ -163,42 +180,77 @@ already corrected in the first revision. In this revision the figure is redrawn 
 manuscript text width, so all text, including the legend, prints at 9 pt or larger. The legend
 now sits in a single row above the panels, the solver labels are in upper case (SA, ILS), and
 the caption has been corrected. While regenerating this figure we found and fixed defects in
-FHOPS's stochastic playback events. As a result, the stochastic utilisation values in
-Section 3.2 changed slightly; see the note on FHOPS 1.0.1 at the end of this letter.
+FHOPS's stochastic playback events. The figure and the utilisation values in Section 3.2 were
+regenerated on FHOPS 1.0.1 and have changed; see the note on FHOPS 1.0.1 at the end of this
+letter. [NUMBERS PENDING: size of the change in the Section 3.2 utilisation values.]
 
 ---
 
 ## Note on FHOPS 1.0.1 (software correction)
 
-While answering the reviewer's questions on delays, re-solving, and figure legibility (R2.7, R2.8,
-R2.10), we re-examined the corresponding FHOPS code paths. We found defects in FHOPS 1.0.0. Our
-choice was to fix them and say so openly, rather than defer, work around, or silently omit them:
+The reviewers' questions on delays, re-solving, and figure legibility (R2.7, R2.8, R2.10) led us
+to re-examine the corresponding FHOPS code paths, and from there to audit FHOPS 1.0.0 more
+broadly: the MILP formulation against the heuristics and playback, the heuristic objective, and
+input validation. The audit found defects. We chose to fix them and say so openly, rather than
+defer, work around, or silently omit them. All fixes come with regression tests and are released
+as **FHOPS 1.0.1** (https://github.com/UBC-FRESH/fhops/releases/tag/v1.0.1;
+`pip install fhops==1.0.1`), which the code metadata tables now cite. The release notes list
+every change.
 
-1. **Rolling-horizon driver.** State was not carried from one planning window to the next.
-   Each window re-planned every block's full volume, including volume already delivered in
-   earlier locked days. Staged inventory between harvesting roles restarted at zero. Machine
-   positions, user-specified locks, and blackout calendars were not carried across window
-   boundaries.
-2. **Stochastic playback.** Landing shocks were applied to individual assignments rather than
-   to calendar days. Machine downtime always removed a whole shift, ignoring the configured
-   duration distribution.
+What was corrected:
+
+1. **Rolling-horizon driver.** State was not carried from one planning window to the next. Each
+   window re-planned every block's full volume, including volume already delivered in earlier
+   locked days; staged inventory between roles restarted at zero; and machine positions,
+   user-specified locks, and blackout calendars were not carried across window boundaries.
+   FHOPS 1.0.1 replays the locked plan before each window and carries its state forward. MILP
+   windows also use an earliness tie-break, so they no longer defer work beyond the locked days.
+2. **Stochastic playback.** Landing shocks were applied per assignment row rather than per
+   calendar day, machine downtime always removed a whole shift instead of the configured
+   duration, and weather and landing effects overwrote downtime instead of combining with it.
 3. **MILP warm start.** Warm-starting the operational MILP failed with the default open-source
-   solver (HiGHS).
-
-All three are fixed, with regression tests, in **FHOPS 1.0.1**
-(https://github.com/UBC-FRESH/fhops/releases/tag/v1.0.1; `pip install fhops==1.0.1`). The code
-metadata tables now cite this release.
+   solver (HiGHS). It now works, and FHOPS reports whether HiGHS accepted the start.
+4. **Operational MILP formulation (Appendix A).** Several constraint blocks did not match the
+   rules applied by the heuristics and by playback, so some MILP plans could not be replayed
+   without sequencing violations or were charged differently:
+   - staged inventories are now kept per upstream role (E7), so a role with several upstream
+     roles processes only wood that each of them has staged;
+   - each role's output is capped at the volume the block still holds (E12), the head-start
+     buffer is waived once the upstream roles have finished the block (E8c), and the loader
+     threshold is the smaller of one truckload and the remaining volume (E9);
+   - landing capacity is enforced per shift and is hard at the default weight (E11); in 1.0.0 it
+     was counted per day with a slack that cost nothing at the default weight, so it did not bind;
+   - machine moves are charged also when a machine idles between two blocks, and staying on a
+     block is no longer charged (E6);
+   - the loader batching variables of 1.0.0, which imposed no restriction, were removed;
+   - timeline blackouts are enforced in the MILP (E1), and blocks without a harvest system carry
+     no role obligations (E2).
+5. **Heuristic objective.** SA, ILS, and Tabu searched and reported a score that could be higher
+   than the score of the schedule they returned, because the moves of machines not touched by
+   the last repair were not charged. The reported objective is now a fresh evaluation of the
+   returned schedule. The heuristics' repair step also respects landing capacity on every day,
+   no longer starves downstream roles on capacity-limited landings, and penalises hard
+   violations so that a schedule cannot gain from keeping an infeasible assignment.
+6. **Validation and legacy code.** Scenario validation is stricter (e.g. inconsistent locks,
+   invalid initial states, and unknown harvest-system identifiers are rejected when a scenario
+   is loaded). The legacy day-level MIP, which was infeasible for every scenario with a loader
+   role, has been retired; `fhops solve-mip` now solves the operational MILP described in the
+   paper.
 
 Effect on the manuscript:
 
-- **Deterministic results** (benchmark, tuning, and scaling: Tables 4–5 and the scaling figure)
-  are reproduced exactly under FHOPS 1.0.1 and are unchanged. When no initial state is supplied,
-  the solvers' behaviour is identical to 1.0.0, and this is covered by regression tests.
-- **Stochastic playback** (Section 3.2, playback figure): mean stochastic utilisation changed by
-  at most 0.02. The interpretation is unchanged.
-- **Formulation (Appendix A):** the equations now state the optional initial-state terms
-  (initial staged inventory and boundary transition) and lock enforcement used for re-planning.
-  With the defaults, they reduce to the original formulation.
-- **Companion rolling-horizon study:** [Pending: outcome of the re-run of the companion study's
-  experiment grid on FHOPS 1.0.1 and any resulting wording changes in Sections 1, 2.2, 4.2,
-  and 5.]
+- **All results were regenerated.** Every SoftwareX asset (benchmark, tuning, playback, costing,
+  and scaling) was regenerated on FHOPS 1.0.1 in one pipeline run. Tables 4 and 5, the values
+  quoted in Section 3, and the playback and scaling figures therefore changed.
+  [NUMBERS PENDING: main changes, e.g. med42 objectives, the tuning Δ values, and the
+  synthetic-small row.] [NUMBERS PENDING: whether the interpretation in Section 3 is unchanged.]
+- **Formulation.** Appendix A states the FHOPS 1.0.1 model with labelled blocks and a short
+  summary of the changes from 1.0.0 (see E.1). Section 2 describes the corrected behaviour
+  (landing capacity per shift, rolling-horizon state, warm starts with HiGHS, exact heuristic
+  objectives).
+- **Reproducibility.** Seeded heuristic results are bit-reproducible on a fixed platform, but
+  last-bit floating-point differences between NumPy or Python builds can change an SA
+  trajectory. Section 4.4 now says so, and the published assets record the platform used.
+- **Companion rolling-horizon study.** [THESIS PENDING: outcome of the re-run of the companion
+  study's experiment grid on FHOPS 1.0.1 and any resulting wording changes in Sections 1, 2.2,
+  4.2, and 5.]
