@@ -169,12 +169,13 @@ Staged output is therefore available downstream from the next shift slot. For a 
 Activation, production gating (**E8a**):
 
 $$
-z_{r,b,s} \le Q_{r,b}\,g_{r,b,s},
+\begin{aligned}
+&z_{r,b,s} \le Q_{r,b}\,g_{r,b,s},
 \qquad
-g_{r,b,s} \le \sum_{m\in\mathcal{M}(r)} x_{m,b,s},
-\qquad
-\sum_{m\in\mathcal{M}(r)\setminus\mathcal{K}_{b,s}} x_{m,b,s} \le |\mathcal{M}(r)\setminus\mathcal{K}_{b,s}|\, g_{r,b,s}
+g_{r,b,s} \le \sum_{m\in\mathcal{M}(r)} x_{m,b,s},\\
+&\sum_{m\in\mathcal{M}(r)\setminus\mathcal{K}_{b,s}} x_{m,b,s} \le |\mathcal{M}(r)\setminus\mathcal{K}_{b,s}|\, g_{r,b,s}
 \qquad \forall (r,b)\in\mathcal{P}^{\text{act}}, s.
+\end{aligned}
 $$
 
 An assigned unlocked machine activates its role; a machine locked to the block may stay idle ($x=1$, $p=0$) without activating it, so a lock never forces production that the staged volumes cannot support.
@@ -204,23 +205,23 @@ linearized exactly as follows (all coefficients are data; $W_b - D_{b,\operatorn
 
 $$
 \begin{aligned}
-&I_{u,b,\operatorname{prev}(s)} \ge q^{\text{batch}}_{b}\, g_{r,b,s}
-&& \text{if } W_b > q^{\text{batch}}_b,\ s\notin\mathcal{S}^{\text{tail}}_b,\\
-&I_{u,b,\operatorname{prev}(s)} + D_{b,\operatorname{prev}(s)} \ge W_b\, g_{r,b,s}
-&& \text{if } W_b \le q^{\text{batch}}_b,\\
-&I_{u,b,\operatorname{prev}(s)} \ge q^{\text{batch}}_{b}\,(g_{r,b,s}-\lambda_{b,s})
-&& \text{if } s\in\mathcal{S}^{\text{tail}}_b,\\
-&I_{u,b,\operatorname{prev}(s)} + D_{b,\operatorname{prev}(s)} \ge q^{\text{batch}}_{b}\, g_{r,b,s} + (W_b - q^{\text{batch}}_{b})\,\lambda_{b,s}
-&& \text{if } s\in\mathcal{S}^{\text{tail}}_b,
+&\text{if } W_b > q^{\text{batch}}_b \text{ and } s\notin\mathcal{S}^{\text{tail}}_b:\\
+&\qquad I_{u,b,\operatorname{prev}(s)} \ge q^{\text{batch}}_{b}\, g_{r,b,s},\\
+&\text{if } W_b \le q^{\text{batch}}_b:\\
+&\qquad I_{u,b,\operatorname{prev}(s)} + D_{b,\operatorname{prev}(s)} \ge W_b\, g_{r,b,s},\\
+&\text{if } s\in\mathcal{S}^{\text{tail}}_b:\\
+&\qquad I_{u,b,\operatorname{prev}(s)} \ge q^{\text{batch}}_{b}\,(g_{r,b,s}-\lambda_{b,s}),\\
+&\qquad I_{u,b,\operatorname{prev}(s)} + D_{b,\operatorname{prev}(s)} \ge q^{\text{batch}}_{b}\, g_{r,b,s} + (W_b - q^{\text{batch}}_{b})\,\lambda_{b,s},
 \end{aligned}
 $$
 
 $$
-D_{b,\operatorname{prev}(s)} \ge (W_b - q^{\text{batch}}_{b})\,\lambda_{b,s}
-\quad \forall s\in\mathcal{S}^{\text{tail}}_b,
-\qquad
-\lambda_{b,s} \ge \lambda_{b,\operatorname{prev}(s)}
-\quad \forall s,\operatorname{prev}(s)\in\mathcal{S}^{\text{tail}}_b.
+\begin{aligned}
+&D_{b,\operatorname{prev}(s)} \ge (W_b - q^{\text{batch}}_{b})\,\lambda_{b,s}
+&& \forall s\in\mathcal{S}^{\text{tail}}_b,\\
+&\lambda_{b,s} \ge \lambda_{b,\operatorname{prev}(s)}
+&& \forall s \text{ with } s,\operatorname{prev}(s)\in\mathcal{S}^{\text{tail}}_b.
+\end{aligned}
 $$
 
 $\lambda_{b,s}=1$ is only possible once at most one truckload remains; it then relaxes the threshold to the remaining volume. Outside $\mathcal{S}^{\text{tail}}_b$ the remaining volume provably exceeds a truckload, so no binary is needed there.
@@ -249,11 +250,12 @@ where $N^{\text{lock}}_{\ell,s} = \sum_{b:\,\ell(b)=\ell}|\mathcal{K}_{b,s}|$ is
 Remaining role output, no role can handle more wood than the block still holds (**E12**):
 
 $$
-\sum_{s\in\mathcal{S}} z_{r,b,s} \le R_{r,b}
-\qquad \forall b\in\mathcal{B}^{\text{seq}},\; r\in\mathcal{R}_b,
-\qquad
-z_{r,b,s} + D_{b,s} \le W_b
-\qquad \forall (r,b)\in\mathcal{P}^{\text{cap}},\; s.
+\begin{aligned}
+&\sum_{s\in\mathcal{S}} z_{r,b,s} \le R_{r,b}
+&& \forall b\in\mathcal{B}^{\text{seq}},\; r\in\mathcal{R}_b,\\
+&z_{r,b,s} + D_{b,s} \le W_b
+&& \forall (r,b)\in\mathcal{P}^{\text{cap}},\; s.
+\end{aligned}
 $$
 
 Locked assignments (**E13**; a lock without a shift label pins every available shift of its day; a lock with a shift label pins only that slot):
@@ -282,7 +284,7 @@ Primary modules are `operational.py`, `data.py`, and `driver.py` under `src/fhop
 | Block | Pyomo objects and rules |
 |---|---|
 | **OBJ** | `model.objective`; weights `prod_weight`, `landing_weight`, `mobilisation_weight`, `transition_weight` (move costs $c_{m,b',b}$) |
-| **OBJ2** | `earliness_expression(...)` (operational.py); `_solve_earliness_stage(...)` (driver.py) adds `model.earliness_floor` and `model.earliness_objective`; `solve_operational_milp(..., earliness=True)` |
+| **OBJ2** | `earliness_expression(...)` (operational.py); `_solve_earliness_stage(...)` (driver.py) adds `model.earliness_floor` and `model.earliness_objective`; `solve_operational_milp(earliness=True)` |
 | **INIT** | `build_operational_bundle(...)` (data.py) flattens `Scenario.initial_state` into `bundle.initial_staged_inventory`, `bundle.initial_role_remaining`, `bundle.initial_machine_block` |
 | **E1** | `model.machine_capacity` (`machine_capacity_rule`); blackouts from `bundle.blackout_slots` (`build_blackout_slots(...)`, shared with the heuristics) |
 | **E2** | `model.role_compatibility` (`role_compatibility_rule`; skipped for `bundle.unsequenced_blocks`) |
