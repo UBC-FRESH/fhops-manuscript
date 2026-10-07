@@ -16,8 +16,8 @@ The current release is an early public platform baseline. It demonstrates reprod
 FHOPS is structured to support transfer to new contexts through scenario and parameter updates rather than solver rewrites. Four current limits remain explicit:
 \begin{itemize}
   \item Validation breadth is still centred on a single harvest-system archetype (BC ground-based cut-to-length); skyline, helicopter, tethered, and salvage systems are not yet validated here and make no claim of generality beyond that archetype.
-  \item Runtime comparisons are environment-dependent and should be interpreted as within-study baselines.
-  \item Warm-start MIP integration is implemented, but decisive performance gains at larger stress cases are not yet claimed.
+  \item Runtime comparisons are environment-dependent and should be interpreted as within-study baselines. Seeded heuristic results are bit-reproducible on a fixed platform, but last-bit floating-point differences between NumPy or Python builds can change an SA acceptance decision and hence the search trajectory; the published assets therefore record their platform (\breakpath{notes/softwarex_assets_v101_env.txt} and \breakpath{docs/softwarex/assets/benchmark_runs.log}).
+  \item Warm-start MIP integration is implemented (HiGHS and Gurobi), but decisive performance gains at larger stress cases are not yet claimed.
   \item Delay effects are reported as utilisation and production losses in playback; schedule-level cost outputs currently cover mobilisation only and do not yet convert delays into standby or delay costs.
 \end{itemize}
 
