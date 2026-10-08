@@ -12,7 +12,7 @@ Machines $m\in\mathcal{M}$, blocks $b\in\mathcal{B}$, landings $\ell\in\mathcal{
 - \omega^{\text{land}}\!\sum_{\ell,s}\sum_{k=1}^{K_\ell} k\,S_{\ell,s,k}\\
 - \sum_{m,s}\sum_{b'\ne b}\bigl(\omega^{\text{mob}}\delta_{m,b',b}+\omega^{\text{trans}}\bigr)\,y_{m,b',b,s}.
 \end{multline*}
-\textbf{OBJ} rewards terminal-role production (machine production on blocks without terminal roles) and subtracts unmet block volume, an increasing price for each machine beyond landing capacity, and the cost of every move between blocks. The optional earliness stage (\textbf{OBJ2}; default in rolling-horizon windows) re-solves the model with \textbf{OBJ} held within a relative $10^{-6}$ of its first-stage value and maximises production-weighted earliness, so ties in \textbf{OBJ} are broken towards earlier production.
+\textbf{OBJ} rewards terminal-role production (machine production on blocks without terminal roles) and subtracts unmet block volume, an increasing price for each machine beyond landing capacity, and the cost of every move between blocks. The optional earliness stage (\textbf{OBJ2}; default in rolling-horizon windows) re-solves the model with \textbf{OBJ} held within $10^{-6}\max(1,|z_1|)$ of its first-stage value $z_1$ and maximises production-weighted earliness, so ties in \textbf{OBJ} are broken towards earlier production.
 
 \paragraph{Constraint blocks}
 The labels \textbf{E1}--\textbf{E11} are those of FHOPS~1.0.0. \textbf{E6}, \textbf{E7}, \textbf{E8} (now \textbf{E8a}--\textbf{E8c}), \textbf{E9}, and \textbf{E11} were reformulated in FHOPS~1.0.1, and \textbf{E12}, \textbf{E13}, \textbf{INIT}, and \textbf{OBJ2} are new.
@@ -33,7 +33,7 @@ Label & Meaning & Implementation \\
 \bottomrule
 \endlastfoot
 \textbf{OBJ} & Weighted terminal production minus leftover, landing-surplus, and move penalties. & \breakpath{model.objective} \\
-\textbf{OBJ2} & Optional second stage: maximise earliness weighted by production, subject to \textbf{OBJ} $\ge$ its first-stage value minus a $10^{-6}$ relative tolerance. & \breakpath{earliness_expression}, \breakpath{_solve_earliness_stage}; \breakpath{model.earliness_floor}, \breakpath{model.earliness_objective} \\
+\textbf{OBJ2} & Optional second stage: maximise earliness weighted by production, subject to \textbf{OBJ} $\ge z_1-10^{-6}\max(1,|z_1|)$, $z_1$ the first-stage value. & \breakpath{earliness_expression}, \breakpath{_solve_earliness_stage}; \breakpath{model.earliness_floor}, \breakpath{model.earliness_objective} \\
 \textbf{INIT} & Optional initial state: staged inventories, remaining role volumes, and machine positions at the start of the horizon (carried between rolling-horizon windows). & \breakpath{build_operational_bundle} (\breakpath{bundle.initial_staged_inventory}, \breakpath{bundle.initial_role_remaining}, \breakpath{bundle.initial_machine_block}) \\
 \textbf{E1} & At most one block per machine and slot, none when the machine is unavailable (calendar downtime, timeline blackouts). & \breakpath{model.machine_capacity} \\
 \textbf{E2} & Machines work only roles of the block's harvest system. & \breakpath{model.role_compatibility} \\
