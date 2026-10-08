@@ -1,0 +1,458 @@
+\section*{Response to Reviewer Comments --- FHOPS
+(SOFTX-D-26-00697R2)}\label{response-to-reviewer-comments-fhops-softx-d-26-00697r2}
+
+\textbf{Manuscript:} FHOPS: a reproducible optimisation and benchmarking
+stack for forest harvest operations \textbf{Decision:} Minor revision
+\textbf{Editor:} Randall Sobie (Editor-in-Chief, SoftwareX)
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection*{Summary of changes}\label{summary-of-changes}
+
+We thank the editor and both reviewers for their careful reading and
+positive assessment. In this revision we have:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  Clarified the planning scope of the operational model in Section 2:
+  where it sits in the planning hierarchy, and that haul transport is
+  outside its boundary (R2.5, R2.9).
+\item
+  Explained how production rates, availability, and stochastic playback
+  represent utilisation and operational, mechanical, and weather delays,
+  and added an explicit limitation on delay costing (R2.7).
+\item
+  Described how head-start buffers support comparing coupled and
+  decoupled harvesting systems (R2.6), and how the rolling-horizon
+  driver supports re-solving after disruptions (R2.8).
+\item
+  Revised the keywords (R2.2), spelled out FHOPS in the abstract (R2.3),
+  and improved the legibility of the playback figure (R2.10).
+\item
+  Moved the operational MILP formulation out of the main text, as the
+  editor suggested (E.1): the full labelled formulation is versioned
+  with FHOPS 1.0.1 and cited, and a compact appendix summarises it with
+  an equation-to-code table.
+\item
+  Corrected defects in FHOPS that the review led us to find, released
+  FHOPS 1.0.1, and regenerated every benchmark, tuning, playback, and
+  scaling result on that release (see the note on FHOPS 1.0.1 at the end
+  of this letter).
+\end{enumerate}
+
+Reviewer \#2's annotations were made on the PDF of the original
+submission. Below we refer to sections of the revised manuscript.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection*{Editor}\label{editor}
+
+\subsubsection{E.1 ``You might consider putting some of the equations in
+an
+appendix.''}\label{e.1-you-might-consider-putting-some-of-the-equations-in-an-appendix.}
+
+\textbf{Response:} Done. The complete formulation of the operational
+MILP as implemented in FHOPS 1.0.1 (sets, parameters, decision
+variables, every constraint equation with its exact linearisation, and
+the list of changes from FHOPS 1.0.0) is now maintained and versioned
+with the software: it is part of the FHOPS repository at tag v1.0.1 and
+is rendered in the FHOPS documentation (``Operational MILP
+formulation''); both are cited in Section 2.3 and Appendix A. Appendix A
+is a compact summary of about four pages: brief notation, the objective
+(OBJ), one sentence on the optional earliness tie-break (OBJ2), and a
+table that gives, for each labelled block (E1--E13 with E8a--E8c, the
+optional initial state INIT, and the domains D1), its meaning and the
+Pyomo components that implement it. The labels are those of the
+versioned formulation, so every equation can be traced from the paper to
+the full statement and to the code. Blocks that persist from FHOPS 1.0.0
+keep their labels (E1--E11); E6, E7, E8 (now E8a--E8c), E9 and E11 were
+reformulated in 1.0.1, and E12, E13, INIT and OBJ2 are new. Section 2.3
+keeps a prose summary of the objective and of each constraint family.
+The main text is shorter, the appendix stays short, and the full
+equations remain auditable in the version of the software the paper
+describes.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection*{Reviewer \#1}\label{reviewer-1}
+
+\subsubsection{R1.1 ``All of my comments on the original version of the
+article have been reviewed and corrected. Therefore, I recommend the
+publication of this
+paper.''}\label{r1.1-all-of-my-comments-on-the-original-version-of-the-article-have-been-reviewed-and-corrected.-therefore-i-recommend-the-publication-of-this-paper.}
+
+\textbf{Response:} We thank Reviewer \#1 for the constructive
+first-round comments and for recommending publication.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection*{Reviewer \#2}\label{reviewer-2}
+
+\subsubsection{R2.0 General comment: ``The authors have done an
+excellent job. The application of software and process is well written
+and explained. I would suggest adding market price of products based on
+inventory which can give better insights on economic feasibility of the
+harvesting
+operations.''}\label{r2.0-general-comment-the-authors-have-done-an-excellent-job.-the-application-of-software-and-process-is-well-written-and-explained.-i-would-suggest-adding-market-price-of-products-based-on-inventory-which-can-give-better-insights-on-economic-feasibility-of-the-harvesting-operations.}
+
+\textbf{Response:} We thank the reviewer for this positive assessment.
+We address the market-price suggestion in detail under R2.9 below.
+
+\subsubsection{R2.1 (title) ``The authors have done a good job
+explaining FHOPS through the manuscript'' --- and R2.4 (contribution 1)
+``Good
+attempt''}\label{r2.1-title-the-authors-have-done-a-good-job-explaining-fhops-through-the-manuscript-and-r2.4-contribution-1-good-attempt}
+
+\textbf{Response:} Thank you.
+
+\subsubsection{R2.2 (keywords) ``Forest harvest operations and
+optimisation already exist in the manuscript title consider another
+wording.''}\label{r2.2-keywords-forest-harvest-operations-and-optimisation-already-exist-in-the-manuscript-title-consider-another-wording.}
+
+\textbf{Response:} Agreed. We replaced the keywords that repeat the
+title (``forest operations'', ``optimisation'') and replaced
+``heuristics'' with more specific terms. The keywords are now:
+\emph{machine scheduling; mixed-integer programming; metaheuristics;
+reproducibility; forest management planning; sustainability}.
+
+\subsubsection{R2.3 (abstract) ``Please expand''
+{[}FHOPS{]}}\label{r2.3-abstract-please-expand-fhops}
+
+\textbf{Response:} Done. The abstract now spells out the name at first
+use: ``The Forest Harvesting Operations Planning System (FHOPS)
+addresses that requirement\ldots{}''.
+
+\subsubsection{R2.5 (Section 2) ``Does this include
+trucking''}\label{r2.5-section-2-does-this-include-trucking}
+
+\textbf{Response:} No.~The operational model schedules the in-block
+machine roles up to and including loading at the landing. A loader works
+only once a truckload (or the block's remaining volume, if smaller) is
+staged at the landing (constraint block E9), but haul transport (truck
+fleets, dispatching, and delivery to mills) is outside the model. We now
+state this boundary explicitly in the opening paragraph of Section 2.
+
+\subsubsection{R2.6 (Section 2) ``Helps in decision making to have a
+coupled or decoupled harvesting
+system''}\label{r2.6-section-2-helps-in-decision-making-to-have-a-coupled-or-decoupled-harvesting-system}
+
+\textbf{Response:} We agree, and we now make this capability explicit in
+Section 2.1. Each role can be given a head-start (in shifts of upstream
+output), which sets the staged buffer B\_\{r,b\} in constraint block E8b
+(the buffer is waived once the upstream roles have finished the block,
+E8c):
+
+\begin{itemize}
+\tightlist
+\item
+  A positive head-start represents a decoupled system, e.g.~a roadside
+  processor that starts only once a deck has accumulated.
+\item
+  A zero head-start approximates a coupled (hot) system, limited only by
+  the one-shift staging lag of E7.
+\end{itemize}
+
+Users can therefore compare both configurations on the same scenario and
+data contract. The reference ladder uses zero head-start for processing
+and loading, apart from the loader's truckload threshold (E9).
+
+\subsubsection{R2.7 (Section 2.1, production rates) ``I believe
+utilization is considered here, because delays (operational/mechanical/
+personal) has a major influence on the final cost of harvesting
+operations''}\label{r2.7-section-2.1-production-rates-i-believe-utilization-is-considered-here-because-delays-operationalmechanical-personal-has-a-major-influence-on-the-final-cost-of-harvesting-operations}
+
+\textbf{Response:} We agree that delays strongly affect production and
+cost. FHOPS represents them at three levels, which we now describe in
+the manuscript:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Production rates.} For the reference ladder, rates are derived
+  from published productivity models and include each source model's
+  delay or utilisation allowance (Section 2.1).
+\item
+  \textbf{Availability.} Machine availability flags in the shift
+  calendar remove planned downtime, such as maintenance or crew days
+  off, from the schedule (Section 2.1).
+\item
+  \textbf{Stochastic playback.} The solved schedule is replayed under
+  sampled disruptions: machine downtime, weather, and landing shocks.
+  The new text in Section 3.2 names these disturbance types and the
+  sampling settings used for the reported results. Their effect on
+  utilisation is shown in the playback figure.
+\end{enumerate}
+
+We also added a limitation to Section 4.4. Delay effects are currently
+reported as utilisation and production losses. The schedule-level cost
+outputs cover mobilisation only and do not yet convert delays into
+standby or delay costs.
+
+\subsubsection{R2.8 (Section 2.2) ``{[}re-solving{]} plays a key role
+during weather uncertainities and
+delays''}\label{r2.8-section-2.2-re-solving-plays-a-key-role-during-weather-uncertainities-and-delays}
+
+\textbf{Response:} We agree. Section 2.2 now notes that FHOPS ships a
+rolling-horizon driver (\texttt{fhops\ plan\ rolling}). It re-solves
+successive planning windows with the SA or MILP solver while locking
+near-term decisions, which supports periodic re-planning after weather
+or delay disruptions. Before each window, the locked plan is replayed
+and its state (remaining block volume, staged inventories, machine
+positions, and locks) is carried into the next window; MILP windows add
+an earliness tie-break so that they do not defer work beyond the locked
+days. While preparing this answer we found that FHOPS 1.0.0 did not
+carry this state between windows; the correction is part of FHOPS 1.0.1
+(see the note at the end of this letter). The design of rolling-horizon
+re-optimisation (planning-horizon length and re-optimisation frequency)
+is evaluated in the companion study cited in the manuscript, across
+three BC operating contexts and three problem sizes. Because the
+rolling-horizon correction in FHOPS 1.0.1 affects that study's
+experiments, the manuscript no longer quotes its quantitative findings;
+it only points to the study.
+
+\subsubsection{R2.9 (Section 2.3, mobilisation cost parameter) ``If
+market values of various products can be added it helps to estimate the
+revenue generated. This helps to get a better economic perspective of
+the harvesting
+operation.''}\label{r2.9-section-2.3-mobilisation-cost-parameter-if-market-values-of-various-products-can-be-added-it-helps-to-estimate-the-revenue-generated.-this-helps-to-get-a-better-economic-perspective-of-the-harvesting-operation.}
+
+\textbf{Response:} We thank the reviewer for this suggestion and agree
+that net revenue matters for the economic feasibility of harvesting
+operations. However, it falls outside the decision scope of the model
+presented here.
+
+FHOPS addresses short-term (e.g.~multi-week), detailed operational
+machine scheduling. At this level, the decisions that determine gross
+revenue have already been made upstream, in tactical-operational
+planning:
+
+\begin{itemize}
+\tightlist
+\item
+  which blocks are harvested;
+\item
+  with which harvest system and prescription;
+\item
+  and hence which assortments and volumes are produced.
+\end{itemize}
+
+The operational model takes these decisions as fixed inputs. It
+optimises how the resulting workload is executed: machine--block
+assignments, sequencing, timing, delivered production, mobilisation, and
+landing use.
+
+Because the assortment volumes are fixed upstream, product prices are
+not needed to formulate or solve this scheduling problem. The objective
+instead rewards delivering the planned volume and penalises volume left
+unharvested. Economic feasibility in the revenue-and-margin sense is
+evaluated at the tactical-operational level, where the
+revenue-determining decisions are actually made.
+
+We note that, since this manuscript was first submitted, FHOPS has
+gained a very early-alpha tactical-operational planning layer, published
+as pre-release FHOPS 1.1.0a1. It includes product values at mills and
+terminals and profit or net-present-value objectives, which is the
+planning level where the reviewer's suggestion applies. That layer is
+provisional and outside the scope of this paper; Section 4.3 now
+mentions it briefly.
+
+To make this explicit to readers, we added a sentence to the opening
+paragraph of Section 2. It positions the operational model below
+tactical-operational planning and explains why the objective concerns
+schedule execution rather than profit.
+
+\subsubsection{R2.10 (Figure: deterministic vs.~stochastic utilisation)
+``Please make the legends
+readable''}\label{r2.10-figure-deterministic-vs.-stochastic-utilisation-please-make-the-legends-readable}
+
+\textbf{Response:} Done. The overlapping title and clipped legend in the
+original submission were already corrected in the first revision. In
+this revision the figure is redrawn at the manuscript text width, so all
+text, including the legend, prints at 9 pt or larger. The legend now
+sits in a single row above the panels, the solver labels are in upper
+case (SA, ILS), and the caption has been corrected. While regenerating
+this figure we found and fixed defects in FHOPS's stochastic playback
+events. The figure and the utilisation values in Section 3.2 were
+regenerated on FHOPS 1.0.1 and have changed; see the note on FHOPS 1.0.1
+at the end of this letter. The changes are small. Mean day-level
+utilisation (deterministic → stochastic) is now 0.365 → 0.362 for tiny7
+(previously 0.37 → 0.36), 0.566 → 0.562 for med42 with both SA and ILS
+(previously 0.558 → 0.554 for SA and 0.564 → 0.559 for ILS), and 0.378 →
+0.369 for synthetic-small (previously 0.62 → 0.60; its schedule changed
+because the FHOPS 1.0.1 heuristics respect landing capacity). The
+stochastic drop remains below 0.01 in every scenario and is still
+largest for synthetic-small; SA and ILS now give identical deterministic
+utilisation. Section 3.2 now reports all utilisation values to three
+decimals so that these small differences are visible.
+
+\begin{center}\rule{0.5\linewidth}{0.5pt}\end{center}
+
+\subsection*{Note on FHOPS 1.0.1 (software
+correction)}\label{note-on-fhops-1.0.1-software-correction}
+
+The reviewers' questions on delays, re-solving, and figure legibility
+(R2.7, R2.8, R2.10) led us to re-examine the corresponding FHOPS code
+paths, and from there to audit FHOPS 1.0.0 more broadly: the MILP
+formulation against the heuristics and playback, the heuristic
+objective, and input validation. The audit found defects. We chose to
+fix them and say so openly, rather than defer, work around, or silently
+omit them. All fixes come with regression tests and are released as
+\textbf{FHOPS 1.0.1}
+(https://github.com/UBC-FRESH/fhops/releases/tag/v1.0.1;
+\texttt{pip\ install\ fhops==1.0.1}), which the code metadata tables now
+cite. The release notes list every change.
+
+What was corrected:
+
+\begin{enumerate}
+\def\labelenumi{\arabic{enumi}.}
+\tightlist
+\item
+  \textbf{Rolling-horizon driver.} State was not carried from one
+  planning window to the next. Each window re-planned every block's full
+  volume, including volume already delivered in earlier locked days;
+  staged inventory between roles restarted at zero; and machine
+  positions, user-specified locks, and blackout calendars were not
+  carried across window boundaries. FHOPS 1.0.1 replays the locked plan
+  before each window and carries its state forward. MILP windows also
+  use an earliness tie-break, so they no longer defer work beyond the
+  locked days.
+\item
+  \textbf{Stochastic playback.} Landing shocks were applied per
+  assignment row rather than per calendar day, machine downtime always
+  removed a whole shift instead of the configured duration, and weather
+  and landing effects overwrote downtime instead of combining with it.
+\item
+  \textbf{MILP warm start.} Warm-starting the operational MILP failed
+  with the default open-source solver (HiGHS). It now works, and FHOPS
+  reports whether HiGHS accepted the start.
+\item
+  \textbf{Operational MILP formulation (Appendix A).} Several constraint
+  blocks did not match the rules applied by the heuristics and by
+  playback, so some MILP plans could not be replayed without sequencing
+  violations or were charged differently:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    staged inventories are now kept per upstream role (E7), so a role
+    with several upstream roles processes only wood that each of them
+    has staged;
+  \item
+    each role's output is capped at the volume the block still holds
+    (E12), the head-start buffer is waived once the upstream roles have
+    finished the block (E8c), and the loader threshold is the smaller of
+    one truckload and the remaining volume (E9);
+  \item
+    landing capacity is enforced per shift and is hard at the default
+    weight (E11); in 1.0.0 it was counted per day with a slack that cost
+    nothing at the default weight, so it did not bind;
+  \item
+    machine moves are charged also when a machine idles between two
+    blocks, and staying on a block is no longer charged (E6);
+  \item
+    the loader batching variables of 1.0.0, which imposed no
+    restriction, were removed;
+  \item
+    timeline blackouts are enforced in the MILP (E1), and blocks without
+    a harvest system carry no role obligations (E2).
+  \end{itemize}
+\item
+  \textbf{Heuristic objective.} SA, ILS, and Tabu searched and reported
+  a score that could be higher than the score of the schedule they
+  returned, because the moves of machines not touched by the last repair
+  were not charged. The reported objective is now a fresh evaluation of
+  the returned schedule. The heuristics' repair step also respects
+  landing capacity on every day, no longer starves downstream roles on
+  capacity-limited landings, and penalises hard violations so that a
+  schedule cannot gain from keeping an infeasible assignment.
+\item
+  \textbf{Validation and legacy code.} Scenario validation is stricter
+  (e.g.~inconsistent locks, invalid initial states, and unknown
+  harvest-system identifiers are rejected when a scenario is loaded).
+  The legacy day-level MIP, which was infeasible for every scenario with
+  a loader role, has been retired; \texttt{fhops\ solve-mip} now solves
+  the operational MILP described in the paper.
+\end{enumerate}
+
+Effect on the manuscript:
+
+\begin{itemize}
+\tightlist
+\item
+  \textbf{All results were regenerated.} Every SoftwareX asset
+  (benchmark, tuning, playback, costing, and scaling) was regenerated on
+  FHOPS 1.0.1 in one pipeline run. Tables 4 and 5, the values quoted in
+  Section 3, and the playback and scaling figures therefore changed. The
+  main changes:
+
+  \begin{itemize}
+  \tightlist
+  \item
+    \emph{med42 and synthetic-small.} In the previous version their
+    objectives were dominated by hard-violation penalties, mostly
+    landing overloads that the FHOPS 1.0.0 heuristic repair step
+    allowed. The 1.0.1 plans have no hard violations. The med42
+    objectives are now positive and close (24130.32 for SA to 24329.17
+    for ILS, previously −27271.22 to −46063.73), and ILS rather than SA
+    has the best med42 score. Synthetic-small scores −39.79 for every
+    solver (previously −75039.79), which is exactly its undelivered
+    volume; it still delivers nothing and keeps its 39.79 m³ staged.
+  \item
+    \emph{Tuning (Table 5).} Δ against the SA default is 42.74 (tiny7),
+    0.14 (small21), −990.50 (med42), and 0.00 (synthetic-small),
+    previously 42.74, 10.23, −8214.08, and 0.00. Table 5 now has a
+    Budget column and a note: each tuning run is much shorter than the
+    SA default benchmark run it is compared with.
+  \item
+    \emph{Runtimes.} Every runtime in Table 4 is lower (by 16--39 \%),
+    and the scaling runtimes are 20.69, 45.86, and 69.22 s for 4, 8, and
+    16 blocks (previously 31.81, 84.88, and 108.97 s).
+  \item
+    \emph{Utilisation (Section 3.2).} See R2.10.
+  \end{itemize}
+
+  The main conclusions of Section 3 hold: objective, production,
+  runtime, and mobilisation rank the solvers differently on med42, so
+  solver choice should follow planning priorities; tuning gains are
+  scenario-dependent and do not beat the SA default on med42;
+  disturbance sensitivity is small and scenario-dependent; and runtime
+  increases with the number of blocks. We revised the interpretations
+  that no longer held. med42 is no longer described as
+  penalty-dominated, and the synthetic-small score is now explained as
+  unmet volume rather than as a penalty for infeasible schedules. The
+  small21 tuning gain is now described as a tie, and Section 3.1
+  explains that Δ compares a short tuning run with a much longer SA
+  default run. The caption of Table 4 now says that only synthetic-small
+  has a negative objective, and the sign-convention note in Section 2
+  now names the unmet-volume term.
+\item
+  \textbf{Formulation.} The FHOPS 1.0.1 model, with labelled blocks and
+  the list of changes from 1.0.0, is versioned with the software and
+  summarised in Appendix A (see E.1). Section 2 describes the corrected
+  behaviour (landing capacity per shift, rolling-horizon state, warm
+  starts with HiGHS, exact heuristic objectives).
+\item
+  \textbf{Reproducibility.} Seeded heuristic results are
+  bit-reproducible on a fixed platform, but last-bit floating-point
+  differences between NumPy or Python builds can change an SA
+  trajectory. Section 4.4 now says so, and the published assets record
+  the platform used.
+\item
+  \textbf{Companion rolling-horizon study.} The companion study's
+  rolling-horizon experiments were run with an earlier FHOPS version
+  affected by the carry-forward defect. The manuscript therefore no
+  longer states that study's quantitative conclusions (Sections 4.2 and
+  5); it cites the study only as follow-on work built on FHOPS. Its
+  experiments will be re-run on FHOPS 1.0.1.
+\item
+  \textbf{Synthetic tiers.} The FHOPS 1.0.1 synthetic generator produces
+  scenarios whose machine roles do not match their harvest systems, so
+  the synthetic tiers deliver no volume. Section 3 now states this
+  explicitly; their rows are kept as runtime and reproducibility anchors
+  only. The limitation is listed in the FHOPS 1.0.1 release notes and
+  will be corrected in a later release.
+\end{itemize}
