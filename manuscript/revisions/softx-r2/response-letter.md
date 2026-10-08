@@ -21,8 +21,9 @@ this revision we have:
    (R2.8).
 4. Revised the keywords (R2.2), spelled out FHOPS in the abstract (R2.3), and improved the
    legibility of the playback figure (R2.10).
-5. Moved the full operational MILP formulation to an appendix, as the editor
-   suggested (E.1), with labelled constraint blocks and an equation-to-code table.
+5. Moved the operational MILP formulation out of the main text, as the editor suggested
+   (E.1): the full labelled formulation is versioned with FHOPS 1.0.1 and cited, and a compact
+   appendix summarises it with an equation-to-code table.
 6. Corrected defects in FHOPS that the review led us to find, released FHOPS 1.0.1, and
    regenerated every benchmark, tuning, playback, and scaling result on that release (see the
    note on FHOPS 1.0.1 at the end of this letter).
@@ -36,17 +37,20 @@ sections of the revised manuscript.
 
 ### E.1 "You might consider putting some of the equations in an appendix."
 
-**Response:** Done. Appendix A now gives the complete formulation of the operational MILP as
-implemented in FHOPS 1.0.1: sets, parameters, decision variables, the objective (OBJ), the
-constraint blocks (E1–E13), the optional initial state (INIT) and earliness tie-break (OBJ2),
-the domain declarations (D1), and a table that maps each labelled block to the Pyomo objects that
-implement it. Blocks that persist from FHOPS 1.0.0 keep their labels (E1–E11). E6 (machine
-moves), E7 (staged inventory), E8 (activation and head start, now E8a–E8c), E9 (loader truckload
-threshold) and E11 (landing capacity per shift) were reformulated in 1.0.1, and E12 (remaining
-output) and E13 (locked assignments) are new. A short paragraph at the end of the appendix
-summarises what changed from FHOPS 1.0.0. Section 2.3 keeps a prose summary of the objective
-and of each constraint family, with the traceability argument. This shortens the main text
-without losing the auditable link between the equations and the implementation.
+**Response:** Done. The complete formulation of the operational MILP as implemented in FHOPS
+1.0.1 (sets, parameters, decision variables, every constraint equation with its exact
+linearisation, and the list of changes from FHOPS 1.0.0) is now maintained and versioned with the
+software: it is part of the FHOPS repository at tag v1.0.1 and is rendered in the FHOPS
+documentation ("Operational MILP formulation"); both are cited in Section 2.3 and Appendix A.
+Appendix A is a compact summary of about four pages: brief notation, the objective (OBJ), one
+sentence on the optional earliness tie-break (OBJ2), and a table that gives, for each labelled
+block (E1–E13 with E8a–E8c, the optional initial state INIT, and the domains D1), its meaning and
+the Pyomo components that implement it. The labels are those of the versioned formulation, so
+every equation can be traced from the paper to the full statement and to the code. Blocks that
+persist from FHOPS 1.0.0 keep their labels (E1–E11); E6, E7, E8 (now E8a–E8c), E9 and E11 were
+reformulated in 1.0.1, and E12, E13, INIT and OBJ2 are new. Section 2.3 keeps a prose summary of
+the objective and of each constraint family. The main text is shorter, the appendix stays short,
+and the full equations remain auditable in the version of the software the paper describes.
 
 ---
 
@@ -244,10 +248,10 @@ Effect on the manuscript:
   quoted in Section 3, and the playback and scaling figures therefore changed.
   [NUMBERS PENDING: main changes, e.g. med42 objectives, the tuning Δ values, and the
   synthetic-small row.] [NUMBERS PENDING: whether the interpretation in Section 3 is unchanged.]
-- **Formulation.** Appendix A states the FHOPS 1.0.1 model with labelled blocks and a short
-  summary of the changes from 1.0.0 (see E.1). Section 2 describes the corrected behaviour
-  (landing capacity per shift, rolling-horizon state, warm starts with HiGHS, exact heuristic
-  objectives).
+- **Formulation.** The FHOPS 1.0.1 model, with labelled blocks and the list of changes from
+  1.0.0, is versioned with the software and summarised in Appendix A (see E.1). Section 2
+  describes the corrected behaviour (landing capacity per shift, rolling-horizon state, warm
+  starts with HiGHS, exact heuristic objectives).
 - **Reproducibility.** Seeded heuristic results are bit-reproducible on a fixed platform, but
   last-bit floating-point differences between NumPy or Python builds can change an SA
   trajectory. Section 4.4 now says so, and the published assets record the platform used.
