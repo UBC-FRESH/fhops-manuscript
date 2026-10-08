@@ -1,0 +1,54 @@
+% Appendix A: compact summary of the FHOPS 1.0.1 operational MILP. The complete canonical
+% formulation is versioned with FHOPS (cited below); its labels must match this summary.
+This appendix summarises the deterministic operational MILP of FHOPS~1.0.1. The complete canonical formulation, with all sets, parameters, decision variables, constraint equations and their exact linearisations, defaults, and the list of changes from FHOPS~1.0.0, is versioned with the software at tag \texttt{v1.0.1}~\cite{fhops2026formulation} and rendered in the FHOPS documentation~\cite{fhops2026formulationdocs}. The labels below are those of that source. Table~\ref{tab:formulation-map} gives the meaning of each labelled block and the Pyomo components that implement it in \breakpath{src/fhops/model/milp} (\texttt{operational.py}, \texttt{data.py}, \texttt{driver.py}).
+
+\paragraph{Notation}
+Machines $m\in\mathcal{M}$, blocks $b\in\mathcal{B}$, landings $\ell\in\mathcal{L}$, and shift slots $s=(d,\sigma)\in\mathcal{S}$ (day $d$, shift $\sigma$) in time order. The harvest system of block $b$ defines its required roles $\mathcal{R}_b$, its terminal roles $\mathcal{T}_b\subseteq\mathcal{R}_b$, and the upstream roles of each role. The data are machine production rates $\bar{p}_{mb}$, block volumes $W_b$, availability $A_{m,s}\in\{0,1\}$ (calendars and blackouts), block windows, landing capacities $C_\ell$, truckload volumes $q^{\text{batch}}_b$, head-start buffers $B_{r,b}$, mobilisation costs $\delta_{m,b',b}$, and objective weights $\omega^{\text{prod}},\omega^{\text{mob}},\omega^{\text{trans}},\omega^{\text{land}}$. The decision variables are assignments $x_{m,b,s}\in\{0,1\}$, machine production $p_{m,b,s}\ge 0$, role production $z_{r,b,s}\ge 0$, moves $y_{m,b',b,s}\ge 0$ ($b'\ne b$) of a machine-position network, staged inventories $I_{u,b,s}\ge 0$ per upstream role $u$, activation, waiver, and loader-tail binaries $g$, $h$, $\lambda$, leftover volumes $L_b\ge 0$, and unit landing-surplus slacks $S_{\ell,s,k}\in[0,1]$, $k=1,\dots,K_\ell$.
+
+\paragraph{Objective (OBJ)}
+\begin{multline*}
+\max\; \omega^{\text{prod}}\!\sum_{b}\sum_{r\in\mathcal{T}_b}\sum_{s} z_{r,b,s}
+- \omega^{\text{prod}}\!\sum_{b} L_b
+- \omega^{\text{land}}\!\sum_{\ell,s}\sum_{k=1}^{K_\ell} k\,S_{\ell,s,k}\\
+- \sum_{m,s}\sum_{b'\ne b}\bigl(\omega^{\text{mob}}\delta_{m,b',b}+\omega^{\text{trans}}\bigr)\,y_{m,b',b,s}.
+\end{multline*}
+\textbf{OBJ} rewards terminal-role production (machine production on blocks without terminal roles) and subtracts unmet block volume, an increasing price for each machine beyond landing capacity, and the cost of every move between blocks. The optional earliness stage (\textbf{OBJ2}; default in rolling-horizon windows) re-solves the model with \textbf{OBJ} held within a relative $10^{-6}$ of its first-stage value and maximises production-weighted earliness, so ties in \textbf{OBJ} are broken towards earlier production.
+
+\paragraph{Constraint blocks}
+The labels \textbf{E1}--\textbf{E11} are those of FHOPS~1.0.0. \textbf{E6}, \textbf{E7}, \textbf{E8} (now \textbf{E8a}--\textbf{E8c}), \textbf{E9}, and \textbf{E11} were reformulated in FHOPS~1.0.1, and \textbf{E12}, \textbf{E13}, \textbf{INIT}, and \textbf{OBJ2} are new.
+
+\setcounter{table}{0}
+\renewcommand{\theHtable}{appendix.\arabic{table}}
+{\def\baselinestretch{1}\small\selectfont\setlength{\extrarowheight}{2pt}
+\begin{longtable}{@{}>{\raggedright\arraybackslash}p{0.085\linewidth}>{\raggedright\arraybackslash}p{0.44\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}@{}}
+\caption{Labelled blocks of the FHOPS~1.0.1 operational MILP and the Pyomo components (\texttt{model.*}) or functions that implement them.}\label{tab:formulation-map}\\
+\toprule
+Label & Meaning & Implementation \\
+\midrule
+\endfirsthead
+\toprule
+Label & Meaning & Implementation \\
+\midrule
+\endhead
+\bottomrule
+\endlastfoot
+\textbf{OBJ} & Weighted terminal production minus leftover, landing-surplus, and move penalties. & \breakpath{model.objective} \\
+\textbf{OBJ2} & Optional second stage: maximise earliness weighted by production, subject to \textbf{OBJ} $\ge$ its first-stage value minus a $10^{-6}$ relative tolerance. & \breakpath{earliness_expression}, \breakpath{_solve_earliness_stage}; \breakpath{model.earliness_floor}, \breakpath{model.earliness_objective} \\
+\textbf{INIT} & Optional initial state: staged inventories, remaining role volumes, and machine positions at the start of the horizon (carried between rolling-horizon windows). & \breakpath{build_operational_bundle} (\breakpath{bundle.initial_staged_inventory}, \breakpath{bundle.initial_role_remaining}, \breakpath{bundle.initial_machine_block}) \\
+\textbf{E1} & At most one block per machine and slot, none when the machine is unavailable (calendar downtime, timeline blackouts). & \breakpath{model.machine_capacity} \\
+\textbf{E2} & Machines work only roles of the block's harvest system. & \breakpath{model.role_compatibility} \\
+\textbf{E3} & Production at most rate times assignment. & \breakpath{model.production_cap} \\
+\textbf{E4} & No assignment outside the block's time window. & \breakpath{model.block_windows} \\
+\textbf{E5} & Role production equals the production of the role's machines. & \breakpath{model.role_prod_balance} \\
+\textbf{E6} & Machine positions as a unit flow over slots; every move into a block other than the last worked one is charged, also across idle slots. & \breakpath{model.position_balance}, \breakpath{model.unplaced_balance}, \breakpath{model.move_requires_work}, \breakpath{model.work_sets_position} \\
+\textbf{E7} & Staged inventory per upstream role; downstream roles consume only volume staged at the start of the slot. & \breakpath{model.inventory_start_eq}, \breakpath{model.inventory_balance}, \breakpath{model.inventory_guard} \\
+\textbf{E8a} & An activation binary gates the production of buffered roles and loaders; assigned unlocked machines activate the role. & \breakpath{model.activation_prod}, \breakpath{model.role_active_upper}, \breakpath{model.role_active_lower} \\
+\textbf{E8b} & Head-start buffer: an active role needs $B_{r,b}$ staged by each upstream role. & \breakpath{model.head_start} \\
+\textbf{E8c} & The buffer is waived once every upstream role has output its remaining volume. & \breakpath{model.upstream_done_link}, \breakpath{model.role_cumulative_eq} \\
+\textbf{E9} & A producing loader needs one truckload, or the remaining block volume if smaller, staged by each upstream role. & \breakpath{model.loader_threshold}, \breakpath{model.loader_threshold_tail}, \breakpath{model.loader_tail_reached}, \breakpath{model.loader_tail_monotone} \\
+\textbf{E10} & Terminal production plus leftover equals the block volume. & \breakpath{model.block_balance} \\
+\textbf{E11} & Machines working a landing's blocks in a slot at most its capacity; hard when $\omega^{\text{land}}=0$, otherwise the $k$-th extra machine costs $k\,\omega^{\text{land}}$. & \breakpath{model.landing_capacity}, \breakpath{model.landing_surplus} \\
+\textbf{E12} & No role outputs more than the volume the block still holds. & \breakpath{model.role_remaining_cap}, \breakpath{model.role_slot_remaining} \\
+\textbf{E13} & Locked assignments fix $x$; a lock that contradicts the model leaves the machine idle and is reported. & \breakpath{model.locked_assignment} \\
+\textbf{D1} & Domains: $x,g,h,\lambda$ binary; $p,z,y,I,L\ge 0$; $S\in[0,1]$. & Variable declarations (\breakpath{model.x}, \breakpath{model.prod}, \dots) \\
+\end{longtable}}
