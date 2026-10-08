@@ -186,7 +186,13 @@ now sits in a single row above the panels, the solver labels are in upper case (
 the caption has been corrected. While regenerating this figure we found and fixed defects in
 FHOPS's stochastic playback events. The figure and the utilisation values in Section 3.2 were
 regenerated on FHOPS 1.0.1 and have changed; see the note on FHOPS 1.0.1 at the end of this
-letter. [NUMBERS PENDING: size of the change in the Section 3.2 utilisation values.]
+letter. The changes are small. Mean day-level utilisation (deterministic → stochastic) is now
+0.365 → 0.362 for tiny7 (previously 0.37 → 0.36), 0.566 → 0.562 for med42 with both SA and ILS
+(previously 0.558 → 0.554 for SA and 0.564 → 0.559 for ILS), and 0.378 → 0.369 for
+synthetic-small (previously 0.62 → 0.60; its schedule changed because the FHOPS 1.0.1 heuristics
+respect landing capacity). The stochastic drop remains below 0.01 in every scenario and is still
+largest for synthetic-small; SA and ILS now give identical deterministic utilisation. Section 3.2
+now reports all utilisation values to three decimals so that these small differences are visible.
 
 ---
 
@@ -245,9 +251,32 @@ Effect on the manuscript:
 
 - **All results were regenerated.** Every SoftwareX asset (benchmark, tuning, playback, costing,
   and scaling) was regenerated on FHOPS 1.0.1 in one pipeline run. Tables 4 and 5, the values
-  quoted in Section 3, and the playback and scaling figures therefore changed.
-  [NUMBERS PENDING: main changes, e.g. med42 objectives, the tuning Δ values, and the
-  synthetic-small row.] [NUMBERS PENDING: whether the interpretation in Section 3 is unchanged.]
+  quoted in Section 3, and the playback and scaling figures therefore changed. The main changes:
+  - *med42 and synthetic-small.* In the previous version their objectives were dominated by
+    hard-violation penalties, mostly landing overloads that the FHOPS 1.0.0 heuristic repair
+    step allowed. The 1.0.1 plans have no hard violations. The med42 objectives are now positive
+    and close (24130.32 for SA to 24329.17 for ILS, previously −27271.22 to −46063.73), and ILS
+    rather than SA has the best med42 score. Synthetic-small scores −39.79 for every solver
+    (previously −75039.79), which is exactly its undelivered volume; it still delivers nothing
+    and keeps its 39.79 m³ staged.
+  - *Tuning (Table 5).* Δ against the SA default is 42.74 (tiny7), 0.14 (small21), −990.50
+    (med42), and 0.00 (synthetic-small), previously 42.74, 10.23, −8214.08, and 0.00. Table 5
+    now has a Budget column and a note: each tuning run is much shorter than the SA default
+    benchmark run it is compared with.
+  - *Runtimes.* Every runtime in Table 4 is lower (by 16–39 %), and the scaling runtimes are
+    20.69, 45.86, and 69.22 s for 4, 8, and 16 blocks (previously 31.81, 84.88, and 108.97 s).
+  - *Utilisation (Section 3.2).* See R2.10.
+
+  The main conclusions of Section 3 hold: objective, production, runtime, and mobilisation rank
+  the solvers differently on med42, so solver choice should follow planning priorities; tuning
+  gains are scenario-dependent and do not beat the SA default on med42; disturbance sensitivity
+  is small and scenario-dependent; and runtime increases with the number of blocks. We revised
+  the interpretations that no longer held. med42 is no longer described as penalty-dominated, and
+  the synthetic-small score is now explained as unmet volume rather than as a penalty for
+  infeasible schedules. The small21 tuning gain is now described as a tie, and Section 3.1
+  explains that Δ compares a short tuning run with a much longer SA default run. The caption of
+  Table 4 now says that only synthetic-small has a negative objective, and the sign-convention
+  note in Section 2 now names the unmet-volume term.
 - **Formulation.** The FHOPS 1.0.1 model, with labelled blocks and the list of changes from
   1.0.0, is versioned with the software and summarised in Appendix A (see E.1). Section 2
   describes the corrected behaviour (landing capacity per shift, rolling-horizon state, warm
