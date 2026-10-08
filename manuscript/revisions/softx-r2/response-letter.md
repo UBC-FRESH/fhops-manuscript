@@ -140,8 +140,8 @@ preparing this answer we found that FHOPS 1.0.0 did not carry this state between
 correction is part of FHOPS 1.0.1 (see the note at the end of this letter). The design of
 rolling-horizon re-optimisation (planning-horizon length and re-optimisation frequency) is
 evaluated in the companion study cited in the manuscript, across three BC operating contexts and
-three problem sizes. [THESIS PENDING: outcome of the re-run of the companion study's experiment
-grid on FHOPS 1.0.1.]
+three problem sizes. Because the rolling-horizon correction in FHOPS 1.0.1 affects that study's
+experiments, the manuscript no longer quotes its quantitative findings; it only points to the study.
 
 ### R2.9 (Section 2.3, mobilisation cost parameter) "If market values of various products can be added it helps to estimate the revenue generated. This helps to get a better economic perspective of the harvesting operation."
 
@@ -284,6 +284,11 @@ Effect on the manuscript:
 - **Reproducibility.** Seeded heuristic results are bit-reproducible on a fixed platform, but
   last-bit floating-point differences between NumPy or Python builds can change an SA
   trajectory. Section 4.4 now says so, and the published assets record the platform used.
-- **Companion rolling-horizon study.** [THESIS PENDING: outcome of the re-run of the companion
-  study's experiment grid on FHOPS 1.0.1 and any resulting wording changes in Sections 1, 2.2,
-  4.2, and 5.]
+- **Companion rolling-horizon study.** The companion study's rolling-horizon experiments were run
+  with an earlier FHOPS version affected by the carry-forward defect. The manuscript therefore no
+  longer states that study's quantitative conclusions (Sections 4.2 and 5); it cites the study
+  only as follow-on work built on FHOPS. Its experiments will be re-run on FHOPS 1.0.1.
+- **Synthetic tiers.** The FHOPS 1.0.1 synthetic generator produces scenarios whose machine roles
+  do not match their harvest systems, so the synthetic tiers deliver no volume. Section 3 now
+  states this explicitly; their rows are kept as runtime and reproducibility anchors only. The
+  limitation is listed in the FHOPS 1.0.1 release notes and will be corrected in a later release.
