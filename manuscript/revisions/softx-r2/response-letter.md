@@ -78,8 +78,8 @@ suggestion in detail under R2.9 below.
 
 **Response:** Agreed. We replaced the keywords that repeat the title ("forest operations",
 "optimisation") and replaced "heuristics" with more specific terms. The keywords are now:
-*machine scheduling; mixed-integer programming; metaheuristics; reproducibility; forest
-management planning; sustainability*.
+*machine scheduling; mixed-integer programming; metaheuristics; reproducibility* (the
+submission system allows four keywords).
 
 ### R2.3 (abstract) "Please expand" [FHOPS]
 
