@@ -40,8 +40,8 @@ sections of the revised manuscript.
 **Response:** Done. The complete formulation of the operational MILP as implemented in FHOPS
 1.0.1 (sets, parameters, decision variables, every constraint equation with its exact
 linearisation, and the list of changes from FHOPS 1.0.0) is now maintained and versioned with the
-software: it is part of the FHOPS repository at tag v1.0.1 and is rendered in the FHOPS
-documentation ("Operational MILP formulation"); both are cited in Section 2.3 and Appendix A.
+software in the FHOPS repository (FHOPS 1.0.1 release line) and is cited in Section 2.3 and
+Appendix A.
 Appendix A is a compact summary of about four pages: brief notation, the objective (OBJ), one
 sentence on the optional earliness tie-break (OBJ2), and a table that gives, for each labelled
 block (E1–E13 with E8a–E8c, the optional initial state INIT, and the domains D1), its meaning and
@@ -288,7 +288,3 @@ Effect on the manuscript:
   with an earlier FHOPS version affected by the carry-forward defect. The manuscript therefore no
   longer states that study's quantitative conclusions (Sections 4.2 and 5); it cites the study
   only as follow-on work built on FHOPS. Its experiments will be re-run on FHOPS 1.0.1.
-- **Synthetic tiers.** The FHOPS 1.0.1 synthetic generator produces scenarios whose machine roles
-  do not match their harvest systems, so the synthetic tiers deliver no volume. Section 3 now
-  states this explicitly; their rows are kept as runtime and reproducibility anchors only. The
-  limitation is listed in the FHOPS 1.0.1 release notes and will be corrected in a later release.
