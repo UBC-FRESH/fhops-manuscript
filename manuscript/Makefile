@@ -47,11 +47,11 @@ submission-package: all
 	install -m 0644 sections/software_description.tex sections/illustrative_example.tex "$(SUBMISSION_DIR)/"
 	install -m 0644 sections/impact.tex sections/conclusions.tex sections/acknowledgments.tex "$(SUBMISSION_DIR)/"
 	install -m 0644 sections/appendix_formulation.tex "$(SUBMISSION_DIR)/"
-	install -m 0644 sections/includes/prisma_overview.tex "$(SUBMISSION_DIR)/"
+	install -m 0644 sections/includes/prisma_overview.tex sections/includes/fhops_operational_formulation.tex "$(SUBMISSION_DIR)/"
 	install -m 0644 sections/includes/solver_performance.tex sections/includes/tuning_leaderboard.tex "$(SUBMISSION_DIR)/"
 	install -m 0644 sections/includes/utilisation_robustness.png sections/includes/runtime_vs_blocks.png "$(SUBMISSION_DIR)/"
 	install -m 0644 "$(ELSARTICLE_CLS)" "$(ELSARTICLE_DIR)/elsarticle-num.bst" "$(SUBMISSION_DIR)/"
-	perl -0pi -e 's/\{sections\/(highlights|abstract|introduction|software_description|illustrative_example|impact|conclusions|acknowledgments|appendix_formulation)\}/{$$1}/g; s/\{metadata\/(code_metadata|current_code_version)\}/{$$1}/g; s/\{sections\/includes\/prisma_overview\}/{prisma_overview}/g; s/\{sections\/includes\/solver_performance\.tex\}/{solver_performance.tex}/g; s/\{sections\/includes\/tuning_leaderboard\.tex\}/{tuning_leaderboard.tex}/g; s/\{sections\/includes\/utilisation_robustness\.png\}/{utilisation_robustness.png}/g; s/\{sections\/includes\/runtime_vs_blocks\.png\}/{runtime_vs_blocks.png}/g' "$(SUBMISSION_DIR)"/*.tex
+	perl -0pi -e 's/\{sections\/(highlights|abstract|introduction|software_description|illustrative_example|impact|conclusions|acknowledgments|appendix_formulation)\}/{$$1}/g; s/\{metadata\/(code_metadata|current_code_version)\}/{$$1}/g; s/\{sections\/includes\/prisma_overview\}/{prisma_overview}/g; s/\{sections\/includes\/fhops_operational_formulation\}/{fhops_operational_formulation}/g; s/\{sections\/includes\/solver_performance\.tex\}/{solver_performance.tex}/g; s/\{sections\/includes\/tuning_leaderboard\.tex\}/{tuning_leaderboard.tex}/g; s/\{sections\/includes\/utilisation_robustness\.png\}/{utilisation_robustness.png}/g; s/\{sections\/includes\/runtime_vs_blocks\.png\}/{runtime_vs_blocks.png}/g' "$(SUBMISSION_DIR)"/*.tex
 	cd "$(SUBMISSION_DIR)" && zip -q "../$(SUBMISSION_NAME).zip" *
 	@printf 'Wrote %s\n' "$(SUBMISSION_ZIP)"
 
