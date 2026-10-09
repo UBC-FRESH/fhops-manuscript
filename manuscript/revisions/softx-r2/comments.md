@@ -49,5 +49,5 @@
   50e6f9b, assets_hash 5e069c58…3a4669; fhops `notes/v101_maintenance_plan.md` §8.28) copied; Tables 4–5,
   Figures 2–3, §3 values and interpretation, Table 4/5 captions and the §2 sign-convention note synced;
   `[NUMBERS PENDING]` filled in the response letter (R2.10, FHOPS 1.0.1 note) and cover letter.
-- Open: companion-study re-run on 1.0.1 (`[THESIS PENDING]` in both letters; manuscript claims in §1, §2.2,
-  §4.2, §5 to be re-checked).
+- Resolved: companion-study quantitative findings removed from §4.2 and §5 (study cited only); letters
+  explain why. The re-run on 1.0.1 is follow-up work outside this revision.
