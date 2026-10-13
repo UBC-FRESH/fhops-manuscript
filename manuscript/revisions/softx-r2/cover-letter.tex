@@ -1,0 +1,59 @@
+\documentclass[10pt]{article}
+\usepackage[margin=0.78in]{geometry}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+\usepackage{enumitem}
+\usepackage{parskip}
+\setlist[itemize]{nosep,leftmargin=1.4em}
+\pagestyle{empty}
+
+\begin{document}
+
+\begin{flushright}
+Faculty of Forestry \& Environmental Stewardship\\
+University of British Columbia\\
+2424 Main Mall, Vancouver, BC V6T 1Z4, Canada\\
+\href{mailto:gregory.paradis@ubc.ca}{gregory.paradis@ubc.ca}\\[0.5em]
+% TODO(date): set on upload
+October 2026
+\end{flushright}
+
+Randall Sobie, Editor-in-Chief\\
+\textit{SoftwareX}
+
+\textbf{Re: SOFTX-D-26-00697R2, ``FHOPS: a reproducible optimisation and benchmarking stack for forest harvest operations''}
+
+Dear Dr. Sobie,
+
+Please find enclosed the revised manuscript, together with a marked-up manuscript and a point-by-point response to your comment and those of both reviewers.
+
+We thank you and the reviewers for their positive assessment. As you suggested, the operational MILP formulation has been moved out of the main text: the complete labelled formulation of FHOPS~1.0.1 is now stated in an Appendix, generated from the formulation versioned with the software, and a concise summary is kept in Section~2. In response to Reviewer~\#2 we have:
+\begin{itemize}
+  \item clarified where the operational model sits in the planning hierarchy and its scope boundary at the landing;
+  \item explained how utilisation and delays are represented, how coupled and decoupled systems can be compared, and how rolling-horizon re-solving is supported;
+  \item revised the keywords, expanded the FHOPS acronym in the abstract, and redrawn the playback figure for legibility.
+\end{itemize}
+
+\textbf{Software correction (FHOPS~1.0.1).} We want to draw your attention to one further change. The careful review prompted us to re-examine the code paths behind several reviewer questions and then to audit FHOPS~1.0.0 more broadly. In doing so we found defects:
+\begin{itemize}
+  \item the rolling-horizon driver did not carry block progress, staged inventories, machine positions, or locks from one planning window to the next;
+  \item the stochastic playback applied landing shocks and downtime durations incorrectly, and warm-starting the MILP with the default open-source solver (HiGHS) failed;
+  \item several MILP constraint blocks did not match the rules used by the heuristics and playback (staged inventories per upstream role, landing capacity per shift and binding by default, moves across idle shifts, the loader truckload threshold, and loader batching variables that imposed nothing);
+  \item the SA, ILS, and Tabu heuristics could report an objective higher than that of the schedule they returned, and their repair step could overload landings or starve downstream roles.
+\end{itemize}
+Rather than defer or work around these defects, we fixed them, added regression tests, tightened scenario validation, retired an unused legacy MIP model, and published FHOPS~1.0.1, which the revised manuscript now cites. The Appendix states the corrected formulation. Because the corrections change solver results, we regenerated every benchmark, tuning, playback, and scaling result on FHOPS~1.0.1; Tables~4 and~5, the values in Section~3, and the result figures have changed accordingly. The largest change is that the med42 and synthetic-small schedules no longer incur hard-violation penalties (mostly landing overloads), so the med42 objectives are now positive and the synthetic-small score is its undelivered volume; runtimes are lower and the utilisation changes are small. The conclusions of Section~3 hold, and we revised the interpretations that relied on penalty-dominated scores. \textbf{Because the companion rolling-horizon study used an earlier FHOPS version affected by one of these defects, the manuscript no longer quotes its quantitative findings.}
+All changes are listed in the response letter and highlighted in the marked-up manuscript.
+
+The source code is released under the MIT License at \url{https://github.com/UBC-FRESH/fhops} (release \href{https://github.com/UBC-FRESH/fhops/releases/tag/v1.0.1}{v1.0.1}; \href{https://pypi.org/project/fhops/1.0.1/}{PyPI}), and the revised submission includes editable LaTeX sources and reproducible benchmark assets.
+
+The author list is unchanged from the original submission. All authors have reviewed and approved the revision. The work remains original and is not under consideration elsewhere.
+
+Thank you for reconsidering the manuscript. We hope the revision is now suitable for publication in \textit{SoftwareX}.
+
+Sincerely,\\[1.5em]
+Gregory Paradis, Ph.D.\\
+Corresponding author, on behalf of all authors
+
+\end{document}

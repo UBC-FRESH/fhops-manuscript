@@ -1,0 +1,12 @@
+% Appendix: the complete FHOPS 1.0.1 operational MILP. The include is generated from the canonical
+% formulation versioned with FHOPS (docs/softwarex/manuscript/sections/includes/fhops_operational_formulation.md,
+% exported by docs/softwarex/manuscript/scripts/export_docs_assets.py); do not edit it here.
+This appendix states the deterministic operational MILP of FHOPS~1.0.1 in full. It is generated from the canonical formulation versioned with the software~\cite{fhops2026formulation}, so its labels, equations and code mapping are identical to the implementation's reference.
+
+\begingroup
+% Long code identifiers: allow a line break after each underscore.
+\let\fhopsUnderscore\_%
+\renewcommand{\_}{\fhopsUnderscore\allowbreak}%
+\sloppy
+\input{sections/includes/fhops_operational_formulation}
+\endgroup
