@@ -1,0 +1,25 @@
+Date: Oct 13, 2026
+From: SoftwareX
+Subject: Decision on submission to SoftwareX
+Manuscript Number: SOFTX-D-26-00697R2
+FHOPS: a reproducible optimisation and benchmarking stack for forest harvest operations
+Decision: reconsideration following minor revision. Resubmit by Nov 12, 2026.
+Randall Sobie, Editor-in-Chief
+
+Editor comments: Just a few more comments.
+
+It is difficult to refer to other works in the abstract, so it is better to be more general.
+(I am also uneasy with you refering to the work of one of the authors in the abstract)
+
+My suggestion for the first two sentences (I combine them):
+"Operational forest machine scheduling remains dominated by site-specific
+tools that are difficult to transfer, audit, and compare across studies,
+giving rise to calls for reusable, transparent planning workflows."
+
+Our journal is multidisciplinary and the abstract has words and acronyms that are unknown me (as a non-expert)
+"SA/ILS/Tabu heuristics)" ?
+
+You could drop "(tiny7, small21, med42)" as well.
+
+Main
+-20- you could drop the initials in the bracket since you mention that it is from all 3 authors
