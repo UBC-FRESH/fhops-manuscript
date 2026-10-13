@@ -2,6 +2,7 @@
 - Abstract: editor's combined opening sentence adopted verbatim; no reference to other works; heuristics spelled out; dataset names and "(BC)" dropped; "scenario contract", "dataset ladder", "scaling tiers" replaced with plain wording.
 - Introduction: author initials removed from the self-citation disclosure (line 20); Table 1 caption defines MILP/SA/ILS/Tabu. §2: SA/ILS/Tabu defined at first use. Highlight: "MILP solvers" → "exact solvers".
 - `manuscript/revisions/softx-r3/`: decision letter, comment register, response letter, cover letter.
+- Antagonistic review (subagent): applied fixes to letters (accuracy of change scope, quote marks, decision wording), §2 itemize punctuation, and abstract wording (solver stack, datasets, last sentence no longer points to companion work).
 - Builds (Tectonic): manuscript 48 pp; marked-up vs submitted R2 (`latexdiff-so --flatten --type=CFONT --no-del --disable-citation-markup --math-markup=off`) 48 pp; flat EM zip compiles standalone; response letter and cover letter 1 p each. Upload set: `/home/gep/projects/tmp/R3-upload/`.
 
 # 2026-10-08 — R2: Tables 4–5, Figures 2–3, and Section 3 synced with the final FHOPS 1.0.1 assets (#20, branch `revision/softx-r2`)
